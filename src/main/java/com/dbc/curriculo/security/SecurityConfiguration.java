@@ -3,6 +3,8 @@ package com.dbc.curriculo.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -17,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-
+    
     private final TokenService tokenService;
     private static final String AUTHORIZATION = "Authorization";
     private static final String[] webIgnoreMatchers = {
@@ -25,7 +27,7 @@ public class SecurityConfiguration {
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/swagger-ui/**"};
-
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -45,14 +47,14 @@ public class SecurityConfiguration {
         );
         return httpSecurity.build();
     }
-
+    
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
+    public WebSecurityCustomizer webSecurityCustomizer() {
         return (web -> web.ignoring().antMatchers(webIgnoreMatchers));
     }
-
+    
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
@@ -62,20 +64,15 @@ public class SecurityConfiguration {
             }
         };
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
+    
+   /* @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    // Todo -> Adicionar authenticationManager
-
-    /*
-    @Bean
+    }*/
+    
+   /* @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
-    }
-     */
-
+    }*/
 }

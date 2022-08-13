@@ -1,5 +1,6 @@
 package com.dbc.curriculo.security;
 
+import com.dbc.curriculo.entity.UsuarioEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,7 +28,7 @@ public class TokenService {
     private String issuer;
 
     // Todo - Adicionar usuário
-    public String getToken(){
+    public String getToken(UsuarioEntity usuarioEntity){
 
         Integer idFaker = 1;
 
@@ -36,13 +37,13 @@ public class TokenService {
 
         String token = Jwts.builder()
                 .setIssuer(issuer)
-                .claim(Claims.ID,1)
+                .claim(Claims.ID, usuarioEntity.getIdLogin())
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
 
-        return TOKEN_PREFIX + token;
+        return TokenAutorizationFilter.BEARER + token;
     }
 
     public UsernamePasswordAuthenticationToken validarTokenUsuario(String token){

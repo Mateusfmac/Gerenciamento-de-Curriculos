@@ -1,6 +1,7 @@
 package com.dbc.curriculo.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,23 +13,36 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class TokenAutorizationFilter extends OncePerRequestFilter {
-
+    
     private static final String AUTHORIZATION = "Authorization";
-
+    
+    protected static final String BEARER = "Bearer ";
+    
     private final TokenService tokenService;
-
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-
+        String token = getTokenFromHeader(request);
+        
+        UsernamePasswordAuthenticationToken dtoSpring = tokenService.validarTokenUsuario(token);
+        
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(
-                        tokenService.validarTokenUsuario(request.getHeader(AUTHORIZATION))
+                dtoSpring
                 );
-
+        
         filterChain.doFilter(request, response);
+    }
+    
+    private String getTokenFromHeader(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            return null;
+        }
+        return token.replace(BEARER, "");
     }
 }
