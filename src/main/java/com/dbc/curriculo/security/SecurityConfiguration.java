@@ -19,15 +19,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    
+
     private final TokenService tokenService;
     private static final String AUTHORIZATION = "Authorization";
+    private static final String[] permitMatchers = {
+            "/",
+            "/login/**"};
+
     private static final String[] webIgnoreMatchers = {
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/swagger-ui/**"};
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -37,7 +41,7 @@ public class SecurityConfiguration {
                 .and().csrf().disable()
                 .authorizeHttpRequests(
                         (authorizationManager) -> authorizationManager
-                                .antMatchers("/")
+                                .antMatchers(permitMatchers)
                                 .permitAll()
                                 .anyRequest().authenticated()
                 );
@@ -47,12 +51,12 @@ public class SecurityConfiguration {
         );
         return httpSecurity.build();
     }
-    
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web -> web.ignoring().antMatchers(webIgnoreMatchers));
     }
-    
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -64,15 +68,15 @@ public class SecurityConfiguration {
             }
         };
     }
-    
-   /* @Bean
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }*/
-    
-   /* @Bean
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
-    }*/
+    }
 }

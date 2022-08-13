@@ -1,10 +1,14 @@
 package com.dbc.curriculo.exceptions;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.hibernate.id.IdentifierGenerationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,6 +62,27 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleException(BadCredentialsException exception){
         return returnError(exception.getMessage(), HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handleException(UsernameNotFoundException exception) {
+        return returnError(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<Object> handleException(InvalidFormatException exception) {
+        return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleException(DataIntegrityViolationException exception) {
+        return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IdentifierGenerationException.class)
+    public ResponseEntity<Object> handleException(IdentifierGenerationException exception) {
+        return returnError(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 }

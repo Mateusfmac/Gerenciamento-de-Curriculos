@@ -1,18 +1,14 @@
-package com.dbc.curriculo.dto;
+package com.dbc.curriculo.dto.login;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UsuarioDTO {
+public class LoginDTO {
     
     @Schema(description = "id do usuario")
     private Integer idLogin;
     
     @Schema(description = "email para login do usuario")
-    private Integer email;
+    private String email;
 }

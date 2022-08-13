@@ -1,6 +1,6 @@
 package com.dbc.curriculo.security;
 
-import com.dbc.curriculo.entity.UsuarioEntity;
+import com.dbc.curriculo.entity.LoginEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,9 +28,7 @@ public class TokenService {
     private String issuer;
 
     // Todo - Adicionar usuário
-    public String getToken(UsuarioEntity usuarioEntity){
-
-        Integer idFaker = 1;
+    public String getToken(LoginEntity usuarioEntity){
 
         final Date now = new Date();
         final Date exp = new Date(now.getTime() + Long.parseLong(expiration));

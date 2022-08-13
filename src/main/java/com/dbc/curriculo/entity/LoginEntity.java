@@ -8,28 +8,33 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "login")
-public class UsuarioEntity implements UserDetails {
+public class LoginEntity implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id")
     @SequenceGenerator(name = "user_id", sequenceName = "user_id", allocationSize = 1)
     @Column(name = "id_login")
     private Integer idLogin;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "senha")
     private String senha;
-    
-    
+
+    @Column(name = "enable")
+    private Integer enable;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return new ArrayList<>();
     }
     
     @Override
@@ -59,6 +64,6 @@ public class UsuarioEntity implements UserDetails {
     
     @Override
     public boolean isEnabled() {
-        return true;
+        return enable == 1;
     }
 }
