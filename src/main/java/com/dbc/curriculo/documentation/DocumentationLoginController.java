@@ -7,16 +7,14 @@ import com.dbc.curriculo.dto.login.LoginDTO;
 import com.dbc.curriculo.dto.token.TokenDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
 public interface DocumentationLoginController {
 
     @Operation(
-            summary = "Busca um token para o usuário com credênciaias válidas.",
+            summary = "Busca um token para o usuário com credênciais válidas.",
             description = "Se as credências do usuário forem válidas retornará uma token válido de acesso"
     )
     @MagiaResponse
@@ -29,11 +27,11 @@ public interface DocumentationLoginController {
     @MagiaResponse
     public ResponseEntity<LoginDTO> criarCredenciasUsuario(@RequestBody @Valid LoginCredenciaisDTO loginCredenciais);
 
-    @Operation(
-            summary = "Verifica se o e-mail já está cadastrado no banco de dados.",
-            description = "Caso exista, será retornado um booleano true, se não false."
-    )
-    @MagiaResponse
-    public ResponseEntity<Boolean> verificarSeEmailJaEstaCadastrado(@RequestParam String email);
+//    @Operation(
+//            summary = "Verifica se o e-mail já está cadastrado no banco de dados.",
+//            description = "Caso exista, será retornado um booleano true, se não false."
+//    )
+//    @MagiaResponse
+//    public ResponseEntity<Boolean> verificarSeEmailJaEstaCadastrado(@RequestParam String email);
 
 }
