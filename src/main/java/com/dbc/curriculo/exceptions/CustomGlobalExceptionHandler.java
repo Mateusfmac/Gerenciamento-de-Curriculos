@@ -83,6 +83,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return returnError(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<Object> handleException(ApiException exception) {
+        return returnError(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

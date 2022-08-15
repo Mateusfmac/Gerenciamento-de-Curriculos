@@ -40,11 +40,5 @@ public class LoginController implements DocumentationLoginController {
         return ResponseEntity.ok(loginDTO);
     }
 
-//    @GetMapping("/veficar-se-email-ja-esta-cadastrado")
-//    public ResponseEntity<Boolean> verificarSeEmailJaEstaCadastrado(@RequestParam String email){
-//        return ResponseEntity.ok(loginService.verificarSeEmailJaEstaCadastrado(email));
-//    }
-
-
 }
 
