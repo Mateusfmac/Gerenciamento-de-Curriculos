@@ -14,7 +14,7 @@ public class LoginCredenciaisDTO {
     @NotBlank
     @Schema(
             description = "Email para login do usuario.",
-            example = "sonia_jesus@bakerhughes.com"
+            example = "sonia_jesus@dbccompany.com.br"
     )
     private String email;
 
