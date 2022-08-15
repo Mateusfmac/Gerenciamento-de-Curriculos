@@ -14,24 +14,17 @@ import javax.validation.Valid;
 public interface DocumentationLoginController {
 
     @Operation(
-            summary = "Busca um token para o usuário com credênciais válidas.",
-            description = "Se as credências do usuário forem válidas retornará uma token válido de acesso"
+            summary = "Busca um token para o usuário com credencias válidas.",
+            description = "Se as credencias do usuário forem válidas retornará uma token válido de acesso"
     )
     @MagiaResponse
     public ResponseEntity<TokenDTO> getTokenLogin(@RequestBody @Valid LoginCredenciaisDTO login);
 
     @Operation(
             summary = "Cria um usuário para acessar o sistema.",
-            description = "As credências criadas serão utilizadas para fazer login e entre outros."
+            description = "As credencias criadas serão utilizadas para fazer login e entre outros."
     )
     @MagiaResponse
     public ResponseEntity<LoginDTO> criarCredenciasUsuario(@RequestBody @Valid LoginCredenciaisDTO loginCredenciais);
-
-//    @Operation(
-//            summary = "Verifica se o e-mail já está cadastrado no banco de dados.",
-//            description = "Caso exista, será retornado um booleano true, se não false."
-//    )
-//    @MagiaResponse
-//    public ResponseEntity<Boolean> verificarSeEmailJaEstaCadastrado(@RequestParam String email);
 
 }

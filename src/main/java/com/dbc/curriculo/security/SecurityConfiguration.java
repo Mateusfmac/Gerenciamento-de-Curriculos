@@ -24,7 +24,8 @@ public class SecurityConfiguration {
     private static final String AUTHORIZATION = "Authorization";
     private static final String[] permitMatchers = {
             "/",
-            "/login/**"};
+            "/login/**"
+    };
 
     private static final String[] webIgnoreMatchers = {
             "/v3/api-docs",
