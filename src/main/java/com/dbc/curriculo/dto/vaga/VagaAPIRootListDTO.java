@@ -1,11 +1,17 @@
 package com.dbc.curriculo.dto.vaga;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class VagaAPIListDTO {
+/**
+ * Essa classe é a lista de vagas da API. Será utilizada somente para buscar os dados
+ * @author Clebson Mendonça
+ */
+@Data
+public class VagaAPIRootListDTO {
     @JsonProperty("id")
     public Integer id;
 //    @JsonProperty("Ano_Mes_Dt_Abertura")

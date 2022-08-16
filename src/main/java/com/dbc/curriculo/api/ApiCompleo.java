@@ -1,6 +1,6 @@
 package com.dbc.curriculo.api;
 
-import com.dbc.curriculo.dto.vaga.VagaApiDTO;
+import com.dbc.curriculo.dto.vaga.VagaApiRootDTO;
 import feign.HeaderMap;
 import feign.Headers;
 import feign.Param;
@@ -17,8 +17,8 @@ import java.util.Map;
 public interface ApiCompleo {
 
     @RequestLine("GET api/Relatorios/ListarRelatorioVagasGeral?Pagina={Pagina}&Quantidade={Quantidade}&RetornaHistoricoMudancaStatus=true&RetornaListaContatos=true&RetornaTags=true")
-    public VagaApiDTO getVagas(@HeaderMap Map<String, String> headers,
-                               @Param Integer Pagina,
-                               @Param Integer Quantidade);
+    public VagaApiRootDTO getVagas(@HeaderMap Map<String, String> headers,
+                                   @Param Integer Pagina,
+                                   @Param Integer Quantidade);
 
 }

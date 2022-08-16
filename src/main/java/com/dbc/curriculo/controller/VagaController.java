@@ -1,6 +1,6 @@
 package com.dbc.curriculo.controller;
 
-import com.dbc.curriculo.dto.vaga.VagaApiDTO;
+import com.dbc.curriculo.dto.vaga.VagaApiRootDTO;
 import com.dbc.curriculo.service.VagaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +19,10 @@ public class VagaController {
     private final VagaService vagaService;
 
     @GetMapping("/pagina={pagina}/quantidade={quantidade}")
-    public ResponseEntity<VagaApiDTO> getVagas(
+    public ResponseEntity<VagaApiRootDTO> getVagas(
             @PathVariable("pagina") Integer pagina,
             @PathVariable("quantidade") Integer quantidade){
         return ResponseEntity.ok(vagaService.getVagas(pagina, quantidade));
     }
-
 
 }

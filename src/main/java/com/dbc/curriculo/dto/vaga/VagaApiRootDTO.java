@@ -5,11 +5,15 @@ import lombok.Data;
 
 import java.util.ArrayList;
 
+/**
+ * Essa classe é a root para buscar os dados da API
+ * @author Clebson Mendonça
+ */
 @Data
-public class VagaApiDTO {
+public class VagaApiRootDTO {
         @JsonProperty("id")
         public String id;
-        public ArrayList<VagaAPIListDTO> vagaGeralList;
+        public ArrayList<VagaAPIRootListDTO> vagaGeralList;
         public int total;
         public int paginas;
         public int pagina;
