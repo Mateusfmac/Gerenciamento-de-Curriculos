@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class CandidatoDTO extends CandidatoCreateDTO {
+public class CandidatoDTO  {
 
     private Integer idCandidato;
 
@@ -27,7 +27,7 @@ public class CandidatoDTO extends CandidatoCreateDTO {
 
     private String cargo;
 
-    private MultipartFile curriculoUrl;
+    private String curriculoUrl;
 
     private EnderecoCreateDTO endereco;
 

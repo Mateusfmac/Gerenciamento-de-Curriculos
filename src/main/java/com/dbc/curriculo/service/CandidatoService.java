@@ -31,9 +31,7 @@ public class CandidatoService {
 
     private final ObjectMapper objectMapper;
     private final CandidatoRepository candidatoRepository;
-
     private final AmazonS3Service amazonS3Service;
-
     public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate){
         List<Integer> listIds = vagaCreate.stream().map(CandidatoVagaDTO::getIdCandidato).toList();
         return candidatoRepository.findAllById(listIds);
@@ -49,6 +47,7 @@ public class CandidatoService {
         CandidatoEntity candidato = convertToCandidatoEntity(candidatoCreate);
 
         URI uri = amazonS3Service.uploadFile(candidatoCreate.getCurriculoUrl());
+
         candidato.setCurriculoUrl(uri.toString());
 
         if(candidatoCreate.getEndereco() != null){

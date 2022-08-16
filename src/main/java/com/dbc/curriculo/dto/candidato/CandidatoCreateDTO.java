@@ -19,35 +19,33 @@ import java.util.List;
 @Data
 public class CandidatoCreateDTO {
 
-    @NotBlank
+
     private String nome;
 
-    @NotBlank
-    @CPF
+
     private String cpf;
 
-    @NotBlank
+
     private LocalDate dataNascimento;
 
-    @NotBlank
+
     private String telefone;
 
-    @NotNull
+
     private TipoSenioridade senioridade;
 
-    @NotBlank
+
     private String cargo;
 
-    @NotEmpty
+
     private EnderecoCreateDTO endereco;
 
-    @NotNull
+
     private List<EscolaridadeCreateDTO> escolaridades;
 
-    @NotNull
+
     private List<ExperienciaCreateDTO> experiencias;
 
-    @NotBlank
     private MultipartFile curriculoUrl;
 
 }
