@@ -14,15 +14,15 @@ import javax.validation.Valid;
 public interface DocumentationLoginController {
 
     @Operation(
-            summary = "Busca um token para o usuário com credencias válidas.",
-            description = "Se as credencias do usuário forem válidas retornará uma token válido de acesso"
+            summary = "Busca um token para o usuário com credenciais válidas.",
+            description = "Se as credenciais do usuário forem válidas retornará uma token válido de acesso"
     )
     @MagiaResponse
     public ResponseEntity<TokenDTO> getTokenLogin(@RequestBody @Valid LoginCredenciaisDTO login);
 
     @Operation(
             summary = "Cria um usuário para acessar o sistema.",
-            description = "As credencias criadas serão utilizadas para fazer login e entre outros."
+            description = "As credenciais criadas serão utilizadas para fazer login e entre outros."
     )
     @MagiaResponse
     public ResponseEntity<LoginDTO> criarCredenciasUsuario(@RequestBody @Valid LoginCredenciaisDTO loginCredenciais);
