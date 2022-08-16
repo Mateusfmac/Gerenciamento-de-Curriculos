@@ -77,11 +77,11 @@ increment 1
 start 1;
 
 create table vaga(
-	id_vagas text primary key
+	id_vagas integer primary key
 );
 
 create table vaga_candidato(
-	id_vagas text,
+	id_vagas integer,
 	id_candidato integer,
 	primary key(id_vagas, id_candidato),
 	constraint fk_vagas_candidato_vaga foreign key (id_vagas) 
