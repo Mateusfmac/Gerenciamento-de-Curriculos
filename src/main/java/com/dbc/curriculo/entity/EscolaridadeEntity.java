@@ -37,4 +37,16 @@ public class EscolaridadeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_candidato", referencedColumnName = "id_candidato")
     private CandidatoEntity candidatoEntity;
+
+    @Override
+    public String toString() {
+        return "EscolaridadeEntity{" +
+                "idEscolaridade=" + idEscolaridade +
+                ", instituicao='" + instituicao + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", nivel='" + nivel + '\'' +
+                ", dataInicio=" + dataInicio +
+                ", dataFim=" + dataFim +
+                '}';
+    }
 }

@@ -37,5 +37,5 @@ public class CandidatoCreateDTO {
     
     private List<ExperienciaCreateDTO> experienciaEntities;
     
-    private List<VagaCreateDTO> vagaEntities;
+    //private List<VagaCreateDTO> vagaEntities;
 }

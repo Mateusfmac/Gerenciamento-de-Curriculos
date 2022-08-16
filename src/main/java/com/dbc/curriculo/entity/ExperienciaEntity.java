@@ -40,4 +40,16 @@ public class ExperienciaEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_candidato", referencedColumnName = "id_candidato")
     private CandidatoEntity candidatoEntity;
+
+    @Override
+    public String toString() {
+        return "ExperienciaEntity{" +
+                "idExperiencia=" + idExperiencia +
+                ", instituicao='" + instituicao + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", cargo='" + cargo + '\'' +
+                ", dataInicio=" + dataInicio +
+                ", dataFim=" + dataFim +
+                '}';
+    }
 }

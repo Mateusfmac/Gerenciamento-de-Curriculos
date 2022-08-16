@@ -16,7 +16,7 @@ import java.util.Map;
 @Headers("Content-Type: application/json")
 public interface ApiCompleo {
 
-    @RequestLine("GET api/Relatorios/ListarRelatorioVagasGeral?Pagina={Pagina}&Quantidade={Quantidade}")
+    @RequestLine("GET api/Relatorios/ListarRelatorioVagasGeral?Pagina={Pagina}&Quantidade={Quantidade}&RetornaHistoricoMudancaStatus=true&RetornaListaContatos=true&RetornaTags=true")
     public VagaApiDTO getVagas(@HeaderMap Map<String, String> headers,
                                @Param Integer Pagina,
                                @Param Integer Quantidade);

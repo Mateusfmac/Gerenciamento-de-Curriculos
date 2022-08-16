@@ -26,4 +26,11 @@ public class VagaEntity {
             inverseJoinColumns = @JoinColumn(name = "id_candidato")
     )
     private Set<CandidatoEntity> candidatoEntities;
+
+    @Override
+    public String toString() {
+        return "VagaEntity{" +
+                "idVaga=" + idVaga +
+                '}';
+    }
 }

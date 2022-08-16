@@ -2,10 +2,7 @@ package com.dbc.curriculo.entity;
 
 import com.dbc.curriculo.enums.TipoSenioridade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -66,4 +63,18 @@ public class CandidatoEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco")
     private EnderecoEntity enderecoEntity;
+
+    @Override
+    public String toString() {
+        return "CandidatoEntity{" +
+                "idCandidato=" + idCandidato +
+                ", nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", telefone='" + telefone + '\'' +
+                ", senioridade=" + senioridade +
+                ", cargo='" + cargo + '\'' +
+                ", curriculoUrl='" + curriculoUrl + '\'' +
+                '}';
+    }
 }

@@ -33,8 +33,21 @@ public class EnderecoEntity {
     private String cidade;
     
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id_candidato", referencedColumnName = "id_candidato")
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "enderecoEntity")
     private CandidatoEntity candidatoEntity;
-    
+
+    @Override
+    public String toString() {
+        return "EnderecoEntity{" +
+                "idEndereco=" + idEndereco +
+                ", numero=" + numero +
+                ", logradouro='" + logradouro + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + cidade + '\'' +
+                '}';
+    }
 }
