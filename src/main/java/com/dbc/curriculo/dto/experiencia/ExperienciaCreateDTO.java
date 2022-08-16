@@ -9,14 +9,9 @@ import java.time.LocalDate;
 @Data
 public class ExperienciaCreateDTO {
 
-    @NotEmpty
     private String instituicao;
-    @NotEmpty
     private String descricao;
-    @NotEmpty
     private String cargo;
-    @NotNull
     private LocalDate dataInicio;
-    @NotNull
     private LocalDate dataFim;
 }

@@ -42,10 +42,10 @@ public class CandidatoCreateDTO {
     @NotEmpty
     private EnderecoCreateDTO endereco;
 
-    @NotEmpty
+    @NotNull
     private List<EscolaridadeCreateDTO> escolaridades;
 
-    @NotEmpty
+    @NotNull
     private List<ExperienciaCreateDTO> experiencias;
 
     @NotBlank

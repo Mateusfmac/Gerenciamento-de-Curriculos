@@ -9,14 +9,9 @@ import java.time.LocalDate;
 @Data
 public class EscolaridadeCreateDTO {
 
-    @NotEmpty
     private String instituicao;
-    @NotEmpty
     private String descricao;
-    @NotEmpty
     private String nivel;
-    @NotNull
     private LocalDate dataInicio;
-    @NotNull
     private LocalDate dataFim;
 }
