@@ -34,50 +34,50 @@ public class CandidatoController {
 
     
     
-    @PostMapping("/save")
-    public CandidatoCreateDTO save(@RequestBody CandidatoCreateDTO candidatoCreateDTO) throws JsonProcessingException {
-        EnderecoEntity enderecoEntity = objectMapper.convertValue(candidatoCreateDTO.getEnderecoEntity(),
-                EnderecoEntity.class);
-
-        Set<ExperienciaEntity> experienciaEntities =
-                candidatoCreateDTO.getExperienciaEntities()
-                        .stream().map(e->objectMapper.convertValue(e, ExperienciaEntity.class))
-                        .collect(Collectors.toSet());
-
-        Set<EscolaridadeEntity> escolaridadeEntities =
-                candidatoCreateDTO.getEscolaridadeEntities()
-                        .stream().map(e->objectMapper.convertValue(e, EscolaridadeEntity.class))
-                        .collect(Collectors.toSet());
-
-
-
-        VagaEntity vagaEntities = new VagaEntity();
-        vagaEntities.setIdVaga(idVaga);
-
-
-        vagaRepository.save(vagaEntities);
-        idVaga += 1;
-
-        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
-
-
-
-        candidatoEntity.setEnderecoEntity(enderecoEntity);
-        //CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
-        candidatoEntity.setExperienciaEntities(experienciaEntities);
-        candidatoEntity.setEscolaridadeEntities(escolaridadeEntities);
-        candidatoEntity.setVagaEntities(Set.of(vagaEntities));
-        candidatoRepository.save(candidatoEntity);
-
-
-        experienciaEntities.forEach(m->m.setCandidatoEntity(candidatoEntity));
-        escolaridadeEntities.forEach(m->m.setCandidatoEntity(candidatoEntity));
-
-        experienciaRepository.saveAll(experienciaEntities);
-        escolaridadeRepository.saveAll(escolaridadeEntities);
-
-
-        //objectMapper.convertValue(candidatoEntity, CandidatoCreateDTO.class);
-        return null;
-    }
+//    @PostMapping("/save")
+//    public CandidatoCreateDTO save(@RequestBody CandidatoCreateDTO candidatoCreateDTO) throws JsonProcessingException {
+//        EnderecoEntity enderecoEntity = objectMapper.convertValue(candidatoCreateDTO.getEnderecoEntity(),
+//                EnderecoEntity.class);
+//
+//        Set<ExperienciaEntity> experienciaEntities =
+//                candidatoCreateDTO.getExperienciaEntities()
+//                        .stream().map(e->objectMapper.convertValue(e, ExperienciaEntity.class))
+//                        .collect(Collectors.toSet());
+//
+//        Set<EscolaridadeEntity> escolaridadeEntities =
+//                candidatoCreateDTO.getEscolaridadeEntities()
+//                        .stream().map(e->objectMapper.convertValue(e, EscolaridadeEntity.class))
+//                        .collect(Collectors.toSet());
+//
+//
+//
+//        VagaEntity vagaEntities = new VagaEntity();
+//        vagaEntities.setIdVaga(idVaga);
+//
+//
+//        vagaRepository.save(vagaEntities);
+//        idVaga += 1;
+//
+//        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
+//
+//
+//
+//        candidatoEntity.setEnderecoEntity(enderecoEntity);
+//        //CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
+//        candidatoEntity.setExperienciaEntities(experienciaEntities);
+//        candidatoEntity.setEscolaridadeEntities(escolaridadeEntities);
+//        candidatoEntity.setVagaEntities(Set.of(vagaEntities));
+//        candidatoRepository.save(candidatoEntity);
+//
+//
+//        experienciaEntities.forEach(m->m.setCandidatoEntity(candidatoEntity));
+//        escolaridadeEntities.forEach(m->m.setCandidatoEntity(candidatoEntity));
+//
+//        experienciaRepository.saveAll(experienciaEntities);
+//        escolaridadeRepository.saveAll(escolaridadeEntities);
+//
+//
+//        //objectMapper.convertValue(candidatoEntity, CandidatoCreateDTO.class);
+//        return null;
+//    }
 }
