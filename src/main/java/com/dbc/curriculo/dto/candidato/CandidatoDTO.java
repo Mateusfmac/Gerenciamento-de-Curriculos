@@ -5,12 +5,13 @@ import com.dbc.curriculo.dto.escolaridade.EscolaridadeDTO;
 import com.dbc.curriculo.dto.experiencia.ExperienciaDTO;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class CandidatoDTO {
+public class CandidatoDTO extends CandidatoCreateDTO {
 
     private Integer idCandidato;
 
@@ -26,7 +27,7 @@ public class CandidatoDTO {
 
     private String cargo;
 
-    private String curriculoUrl;
+    private MultipartFile curriculoUrl;
 
     private EnderecoCreateDTO endereco;
 

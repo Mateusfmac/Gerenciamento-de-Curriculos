@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -16,8 +17,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class CandidatoCreateDTO {
 
     @NotBlank
@@ -49,6 +48,6 @@ public class CandidatoCreateDTO {
     private List<ExperienciaCreateDTO> experiencias;
 
     @NotBlank
-    private String curriculoUrl;
+    private MultipartFile curriculoUrl;
 
 }

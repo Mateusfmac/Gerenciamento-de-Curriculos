@@ -14,11 +14,13 @@ import com.dbc.curriculo.entity.CandidatoEntity;
 import com.dbc.curriculo.entity.EnderecoEntity;
 import com.dbc.curriculo.entity.EscolaridadeEntity;
 import com.dbc.curriculo.entity.ExperienciaEntity;
+import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +32,8 @@ public class CandidatoService {
     private final ObjectMapper objectMapper;
     private final CandidatoRepository candidatoRepository;
 
+    private final AmazonS3Service amazonS3Service;
+
     public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate){
         List<Integer> listIds = vagaCreate.stream().map(CandidatoVagaDTO::getIdCandidato).toList();
         return candidatoRepository.findAllById(listIds);
@@ -40,9 +44,12 @@ public class CandidatoService {
                 .stream().map(this::getDadoCandidato).toList();
     }
 
-    public CandidatoDTO saveCandidato(CandidatoCreateDTO candidatoCreate){
+    public CandidatoDTO saveCandidato(CandidatoCreateDTO candidatoCreate) throws S3Exception {
 
         CandidatoEntity candidato = convertToCandidatoEntity(candidatoCreate);
+
+        URI uri = amazonS3Service.uploadFile(candidatoCreate.getCurriculoUrl());
+        candidato.setCurriculoUrl(uri.toString());
 
         if(candidatoCreate.getEndereco() != null){
             EnderecoEntity enderecoEntity = convertToEnderecoEntity(candidatoCreate.getEndereco());
@@ -108,7 +115,7 @@ public class CandidatoService {
 
     private CandidatoEntity convertToCandidatoEntity(CandidatoCreateDTO candidatoCreate){
         return objectMapper.convertValue(candidatoCreate, CandidatoEntity.class);
-    };
+    }
 
     private CandidatoDTO converterCandidatoDTO(CandidatoEntity candidatoEntity){
         return objectMapper.convertValue(candidatoEntity, CandidatoDTO.class);
@@ -116,7 +123,7 @@ public class CandidatoService {
 
     private EnderecoEntity convertToEnderecoEntity(EnderecoCreateDTO enderecoCreate){
         return objectMapper.convertValue(enderecoCreate, EnderecoEntity.class);
-    };
+    }
 
     private EnderecoDTO converterEnderecoDTO(EnderecoEntity enderecoEntity){
         return objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
@@ -128,7 +135,7 @@ public class CandidatoService {
                 .convertValue(escolaridadeCreate, EscolaridadeEntity.class);
         escolaridadeEntity.setCandidatoEntity(candidato);
         return escolaridadeEntity;
-    };
+    }
 
     private EscolaridadeDTO converterEscolaridadeDTO(EscolaridadeEntity escolaridadeEntity){
         return objectMapper.convertValue(escolaridadeEntity, EscolaridadeDTO.class);
@@ -140,7 +147,7 @@ public class CandidatoService {
                 .convertValue(experienciaCreateDTO, ExperienciaEntity.class);
         escolaridadeEntity.setCandidatoEntity(candidato);
         return escolaridadeEntity;
-    };
+    }
 
     private ExperienciaDTO converterExperienciaDTO(ExperienciaEntity experienciaEntity){
         return objectMapper.convertValue(experienciaEntity, ExperienciaDTO.class);
