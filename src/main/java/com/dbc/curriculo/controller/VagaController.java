@@ -1,14 +1,13 @@
 package com.dbc.curriculo.controller;
 
-import com.dbc.curriculo.dto.vaga.VagaApiRootDTO;
+import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
+import com.dbc.curriculo.dto.vaga.VagaCreateDTO;
 import com.dbc.curriculo.service.VagaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/vaga")
@@ -23,6 +22,11 @@ public class VagaController {
             @PathVariable("pagina") Integer pagina,
             @PathVariable("quantidade") Integer quantidade){
         return ResponseEntity.ok(vagaService.getVagas(pagina, quantidade));
+    }
+
+    @PostMapping
+    public void create(@RequestBody VagaCreateDTO vagaCreate) throws JsonProcessingException {
+        vagaService.addicionarCandidatosVaga(vagaCreate);
     }
 
 }

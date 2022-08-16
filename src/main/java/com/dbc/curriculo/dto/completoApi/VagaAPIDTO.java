@@ -1,4 +1,4 @@
-package com.dbc.curriculo.dto.vaga;
+package com.dbc.curriculo.dto.completoApi;
 
 import lombok.Data;
 

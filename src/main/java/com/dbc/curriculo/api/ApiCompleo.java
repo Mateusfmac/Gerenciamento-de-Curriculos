@@ -1,6 +1,6 @@
 package com.dbc.curriculo.api;
 
-import com.dbc.curriculo.dto.vaga.VagaApiRootDTO;
+import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
 import feign.HeaderMap;
 import feign.Headers;
 import feign.Param;
