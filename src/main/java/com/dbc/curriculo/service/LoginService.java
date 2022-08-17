@@ -47,8 +47,10 @@ public class LoginService {
         return usuarioRepository.findByEmail(email);
     }
 
-    public boolean verificarSeEmailJaEstaCadastrado(String email){
-        return buscarLoginPorEmail(email).isPresent();
+    public void verificarSeEmailJaEstaCadastrado(String email) throws LoginException {
+         if(buscarLoginPorEmail(email).isPresent()){
+             throw new LoginException("Email já cadastrado.");
+         }
     }
 
     public LoginEntity buscarPorId(Integer idLogin) throws LoginException {
@@ -60,8 +62,11 @@ public class LoginService {
         return loginEntityConvertToLoginDTO(buscarPorId(getIdUsuarioLogado()));
     }
 
-    public LoginDTO createLoginUser(LoginCredenciaisDTO loginCredenciais) {
+    public LoginDTO createLoginUser(LoginCredenciaisDTO loginCredenciais) throws LoginException {
         LoginEntity loginEntity = LoginCredenciaisConvertToLoginEntity(loginCredenciais);
+
+        verificarSeEmailJaEstaCadastrado(loginEntity.getEmail());
+
         loginEntity.setEnable(1);
         loginEntity.setSenha(criptografarSenha(loginEntity.getSenha()));
         usuarioRepository.save(loginEntity);
@@ -87,7 +92,7 @@ public class LoginService {
 
         return new TokenDTO(tokenService.getToken(loginEntity));
     }
-    
+
     private String criptografarSenha(String senha) {
         return new BCryptPasswordEncoder().encode(senha);
     }
