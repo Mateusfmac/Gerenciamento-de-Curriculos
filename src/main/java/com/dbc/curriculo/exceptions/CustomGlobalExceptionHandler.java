@@ -88,4 +88,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return returnError(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(CandidatoException.class)
+    public ResponseEntity<Object> handleException(CandidatoException exception) {
+        return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
 }

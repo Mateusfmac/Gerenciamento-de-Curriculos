@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +30,9 @@ public class AmazonS3Service {
     public URI uploadFile(MultipartFile multipartFile) throws S3Exception {
         try {
             InputStream inputStream = multipartFile.getInputStream();
-            String fileName = multipartFile.getOriginalFilename();
+            String fileName = Calendar.getInstance().toString() + multipartFile.getOriginalFilename();
+            fileName = Base64.getEncoder().encodeToString(
+                            fileName.getBytes());
             String contentType = multipartFile.getContentType();
             return uploadFile(inputStream, fileName, contentType);
         } catch (IOException e) {

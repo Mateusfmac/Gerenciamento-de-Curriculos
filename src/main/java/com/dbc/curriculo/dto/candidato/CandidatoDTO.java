@@ -5,7 +5,6 @@ import com.dbc.curriculo.dto.escolaridade.EscolaridadeDTO;
 import com.dbc.curriculo.dto.experiencia.ExperienciaDTO;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;

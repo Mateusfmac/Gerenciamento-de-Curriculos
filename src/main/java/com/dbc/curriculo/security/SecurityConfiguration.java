@@ -26,6 +26,7 @@ public class SecurityConfiguration {
             "/",
             "/login/**",
             "/candidato/**"
+
     };
 
     private static final String[] webIgnoreMatchers = {
