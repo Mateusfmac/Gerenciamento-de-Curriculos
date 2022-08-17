@@ -26,13 +26,12 @@ public class CandidatoCreateDTO {
 
     @NotBlank
     @Schema(example = "87932766052", description = "O CPF deve ser válido, buscar na 4Devs para teste.")
-    @CPF(message = "O CPF deve ser válido.")
+   // @CPF(message = "O CPF deve ser válido.")
     private String cpf;
 
     @NonNull
     private LocalDate dataNascimento;
 
-    //String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
     @NotBlank
     @Size(max = 14, message = "O número deve conter no máximo 14 caracteres")
     private String telefone;
@@ -42,6 +41,8 @@ public class CandidatoCreateDTO {
 
     @NotBlank
     private String cargo;
+
+    private String curriculoUrl;
 
     @NotNull
     private EnderecoCreateDTO endereco;

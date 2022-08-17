@@ -113,6 +113,31 @@ public class CandidatoService {
         }
     }
 
+    public CandidatoDTO updateCandidato(CandidatoCreateDTO candidatoCreateDTO, Integer idCandidato) throws CandidatoException{
+
+        //CandidatoEntity candidato = ;
+
+       CandidatoEntity candidato = candidatoRepository.findById(idCandidato).stream().findFirst().orElseThrow(()-> new CandidatoException("N existe"));
+
+        candidato.setNome(candidatoCreateDTO.getNome());
+
+        candidato.setCpf(candidatoCreateDTO.getCpf());
+
+        candidato.setCargo(candidatoCreateDTO.getCargo());
+
+        candidato.setCurriculoUrl(candidato.getCurriculoUrl());
+
+        candidato.setDataNascimento(candidatoCreateDTO.getDataNascimento());
+
+        candidato.setSenioridade(candidatoCreateDTO.getSenioridade());
+
+        candidato.setTelefone(candidatoCreateDTO.getTelefone());
+
+
+        candidatoRepository.save(candidato);
+        return converterCandidatoDTO(candidato);
+    }
+
     public void deleteCandidato(Integer idCandidato){
         candidatoRepository.deleteById(idCandidato);
     }
@@ -151,6 +176,10 @@ public class CandidatoService {
 
     private CandidatoEntity convertToCandidatoEntity(CandidatoCreateDTO candidatoCreate){
         return objectMapper.convertValue(candidatoCreate, CandidatoEntity.class);
+    }
+
+    private CandidatoEntity convertCandidatoEntity(CandidatoDTO candidatoDTO){
+        return objectMapper.convertValue(candidatoDTO, CandidatoEntity.class);
     }
 
     private CandidatoDTO converterCandidatoDTO(CandidatoEntity candidatoEntity){

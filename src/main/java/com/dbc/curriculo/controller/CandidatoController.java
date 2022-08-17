@@ -26,7 +26,7 @@ public class CandidatoController {
     private final CandidatoService candidatoService;
 
     @GetMapping("/list-candidato")
-    public ResponseEntity<List<CandidatoDadosDTO>> getListCandidato(){
+    public ResponseEntity<List<CandidatoDadosDTO>> getListCandidato() {
         return ResponseEntity.ok(candidatoService.getAllCandidatoDTO());
     }
 
@@ -43,6 +43,12 @@ public class CandidatoController {
             @Valid @NotNull @RequestPart("documento") MultipartFile documento)
             throws S3Exception, CandidatoException {
         CandidatoDadosDTO candidatoDTO = candidatoService.saveCandidato(candidato, documento);
+        return ResponseEntity.ok(candidatoDTO);
+    }
+
+    @PutMapping("/update-candidato/{idCandidato}")
+    public ResponseEntity<CandidatoDTO> updateCandidato(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO, @PathVariable("idCandidato") Integer idCandidato) throws CandidatoException {
+        CandidatoDTO candidatoDTO = candidatoService.updateCandidato(candidatoCreateDTO, idCandidato);
         return ResponseEntity.ok(candidatoDTO);
     }
 

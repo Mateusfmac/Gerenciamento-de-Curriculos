@@ -8,15 +8,32 @@ CREATE table login(
 
 CREATE SEQUENCE user_id START 1;
 
+create table endereco(
+	id_endereco integer,
+	numero integer not null,
+	logradouro text not null,
+	bairro text not null,
+	cidade text not null,
+	primary key (id_endereco)
+);
+
+create sequence seq_endereco
+increment 1
+start 1;
+
 create table candidato(
 	id_candidato integer primary key,
+	id_endereco integer not null,
 	nome text not null,
-	cpf char(11) not null,
+	cpf char(11) not null unique,
 	data_nascimento date not null,
-	telefone char(14) not null,
+	telefone char(14) not null unique,
 	senioridade text not null,
 	cargo text not null,
-	curriculo_url text not null
+	curriculo_url text not null,
+	constraint fk_candidato_endereco foreign key (id_endereco)
+        references endereco (id_endereco)
+        on delete cascade
 );
 
 create sequence seq_candidato
@@ -32,8 +49,8 @@ create table escolaridade(
 	data_inicio date not null,
 	data_fim date not null,
 	primary key (id_escolaridade),
-    constraint fk_escolaridade_candidato foreign key (id_candidato) 
-    references candidato (id_candidato) 
+    constraint fk_escolaridade_candidato foreign key (id_candidato)
+    references candidato (id_candidato)
     on delete cascade
 );
 
@@ -50,29 +67,12 @@ create table experiencia(
 	data_inicio date not null,
 	data_fim date not null,
 	primary key (id_experiencia),
-    constraint fk_experiencia_candidato foreign key (id_candidato) 
-    references candidato (id_candidato) 
+    constraint fk_experiencia_candidato foreign key (id_candidato)
+    references candidato (id_candidato)
     on delete cascade
 );
 
 create sequence seq_experiencia
-increment 1
-start 1;
-
-create table endereco(
-	id_endereco integer,
-	id_candidato integer not null,
-	numero integer not null,
-	logradouro text not null,
-	bairro text not null,
-	cidade text not null,
-	primary key (id_endereco),
-    constraint fk_endereco_candidato foreign key (id_candidato) 
-    references candidato (id_candidato) 
-    on delete cascade
-);
-
-create sequence seq_endereco
 increment 1
 start 1;
 
