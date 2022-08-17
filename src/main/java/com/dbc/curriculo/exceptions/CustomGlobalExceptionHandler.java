@@ -93,5 +93,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<Object> handleException(LoginException exception) {
+        return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 
 }
