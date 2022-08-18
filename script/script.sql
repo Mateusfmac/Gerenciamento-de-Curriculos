@@ -15,6 +15,7 @@ create table endereco(
 	bairro text not null,
 	cidade text not null,
 	primary key (id_endereco)
+	on delete cascade
 );
 
 create sequence seq_endereco
