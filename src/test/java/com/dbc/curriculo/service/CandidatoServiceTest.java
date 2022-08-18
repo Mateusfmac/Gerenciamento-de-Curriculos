@@ -104,7 +104,7 @@ public class CandidatoServiceTest {
     @Test(expected = CandidatoException.class)
     public void deveTestarErrorSeCPFouTelefoneJaCadastrado() throws S3Exception, CandidatoException {
 
-        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
 
         when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.of(candidatoEntity));
@@ -117,7 +117,7 @@ public class CandidatoServiceTest {
     @Test(expected = CandidatoException.class)
     public void deveTestarErrorSeCPFJaCadastradoMasTelefoneNao() throws S3Exception, CandidatoException {
 
-        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
 
         when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.of(candidatoEntity));
@@ -130,7 +130,7 @@ public class CandidatoServiceTest {
     @Test(expected = CandidatoException.class)
     public void deveTestarErrorSeTelefoneJaCadastradoMasCPFNao() throws S3Exception, CandidatoException {
 
-        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
 
         when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
@@ -143,7 +143,7 @@ public class CandidatoServiceTest {
     @Test
     public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
             MalformedURLException, URISyntaxException {
-        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         URL url = new URL(
                 "https",
                 "stackoverflow.com",
@@ -190,6 +190,7 @@ public class CandidatoServiceTest {
     private EnderecoEntity getEnderecoEntity(){
         EnderecoEntity enderecoEntity = new EnderecoEntity();
         enderecoEntity.setIdEndereco(1);
+        enderecoEntity.setCep("13848000");
         enderecoEntity.setNumero(202);
         enderecoEntity.setLogradouro("Rua Paulo de Frontin");
         enderecoEntity.setBairro("Imbiribeira");
@@ -226,7 +227,7 @@ public class CandidatoServiceTest {
         return vaga;
     }
 
-    private CandidatoCreateDTO getGandidadoCreateDTO(){
+    private CandidatoCreateDTO getCandidadoCreateDTO(){
         CandidatoCreateDTO candidatoCreateDTO = new CandidatoCreateDTO();
 
         candidatoCreateDTO.setNome("Rafael");
