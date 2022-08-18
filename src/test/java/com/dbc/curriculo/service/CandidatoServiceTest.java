@@ -140,26 +140,24 @@ public class CandidatoServiceTest {
 
     }
 
-//    @Test
-//    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
-//            MalformedURLException, URISyntaxException {
-//        URL url = new URL("https://stackoverflow.com");
-//        URI uri = new URI("https://stackoverflow.com");
-//        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
-//        //CandidatoEntity candidatoEntity = get
-//
-//        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
-//        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
-//
-//        doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
-//        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(url);
-//
-//
-//        //doReturn(cand).when(candidatoRepository).save(any(CandidatoEntity.class));
-//
-//        candidatoService.saveCandidato(candidatoCreateDTO, documento);
-//
-//    }
+    @Test
+    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
+            MalformedURLException, URISyntaxException {
+        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        URL url = new URL(
+                "https",
+                "stackoverflow.com",
+                80, "pages/page1.html");
+
+        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
+        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
+
+        //doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
+        //when(amazonS3.getUrl(anyString(), anyString())).thenReturn(url);
+        when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
+        candidatoService.saveCandidato(candidatoCreateDTO, documento);
+
+    }
 
     private CandidatoEntity getCandidatoAllDados(){
         CandidatoEntity candidato = new CandidatoEntity();
