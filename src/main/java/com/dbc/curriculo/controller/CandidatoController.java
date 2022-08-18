@@ -56,7 +56,7 @@ public class CandidatoController implements DocumentationCandidatoController {
     }
 
     @DeleteMapping("/{idUsuario}")
-    public void delete(@RequestParam("idUsuario") Integer idUsuario) {
+    public void delete(@PathVariable("idUsuario") Integer idUsuario) {
         candidatoService.deleteCandidato(idUsuario);
     }
 }

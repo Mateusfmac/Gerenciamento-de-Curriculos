@@ -25,6 +25,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +34,8 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CandidatoServiceTest {
@@ -135,20 +136,19 @@ public class CandidatoServiceTest {
     }
 
 //    @Test
-//    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
-//            IOException,
-//            URISyntaxException {
+//    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException, MalformedURLException {
 //        URL url = new URL("https://stackoverflow.com");
 //
 //        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+//        //CandidatoEntity candidatoEntity = get
 //
 //        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
 //        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
 //
 //        doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
-//        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(uri.toURL());
+//        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(url);
 //
-//        doNothing().when(candidatoRepository).save(any(CandidatoEntity.class));
+//        //doReturn(cand).when(candidatoRepository).save(any(CandidatoEntity.class));
 //
 //        candidatoService.saveCandidato(candidatoCreateDTO, documento);
 //
