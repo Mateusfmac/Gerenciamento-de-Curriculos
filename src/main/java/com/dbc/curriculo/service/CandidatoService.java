@@ -86,22 +86,6 @@ public class CandidatoService {
 
     }
 
-    private void validarSeCPFOrTelefoneJaEstaoCadastrado(CandidatoEntity candidato)
-            throws CandidatoException {
-        Optional<CandidatoEntity> candidatoCPF =
-                candidatoRepository.findByCpf(candidato.getCpf());
-
-        Optional<CandidatoEntity> candidatoNumero =
-                candidatoRepository.findByTelefone(candidato.getTelefone());
-
-        if (candidatoCPF.isPresent() && candidatoNumero.isPresent()) {
-            throw new CandidatoException("CPF já cadastrado e número já cadastrado.");
-        } else if (candidatoCPF.isPresent()) {
-            throw new CandidatoException("CPF já cadastrado.");
-        } else if (candidatoNumero.isPresent()) {
-            throw new CandidatoException("Número já cadastrado.");
-        }
-    }
 
     public CandidatoDTO updateCandidato(CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException {
 
@@ -147,6 +131,23 @@ public class CandidatoService {
 
     public void deleteCandidato(Integer idCandidato) {
         candidatoRepository.deleteById(idCandidato);
+    }
+
+    private void validarSeCPFOrTelefoneJaEstaoCadastrado(CandidatoEntity candidato)
+            throws CandidatoException {
+        Optional<CandidatoEntity> candidatoCPF =
+                candidatoRepository.findByCpf(candidato.getCpf());
+
+        Optional<CandidatoEntity> candidatoNumero =
+                candidatoRepository.findByTelefone(candidato.getTelefone());
+
+        if (candidatoCPF.isPresent() && candidatoNumero.isPresent()) {
+            throw new CandidatoException("CPF já cadastrado e número já cadastrado.");
+        } else if (candidatoCPF.isPresent()) {
+            throw new CandidatoException("CPF já cadastrado.");
+        } else if (candidatoNumero.isPresent()) {
+            throw new CandidatoException("Número já cadastrado.");
+        }
     }
 
     private CandidatoDadosDTO getDadoCandidato(CandidatoEntity candidato) {

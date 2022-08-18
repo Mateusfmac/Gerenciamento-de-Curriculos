@@ -34,7 +34,7 @@ public class CandidatoController implements DocumentationCandidatoController {
 
     @GetMapping("/get-candidato/{idCandidato}")
     public ResponseEntity<CandidatoDTO> getCandidato(
-            @RequestParam("idCandidato") Integer idCandidato) throws CandidatoException {
+            @PathVariable Integer idCandidato) throws CandidatoException {
         CandidatoDTO candidatoDTO = candidatoService.getCandidatoPorId(idCandidato);
         return ResponseEntity.ok(candidatoDTO);
     }
@@ -55,8 +55,8 @@ public class CandidatoController implements DocumentationCandidatoController {
         return ResponseEntity.ok(candidatoDTO);
     }
 
-    @DeleteMapping("/{idUsuario}")
-    public void delete(@RequestParam("idUsuario") Integer idUsuario) {
-        candidatoService.deleteCandidato(idUsuario);
+    @DeleteMapping("/{idCandidato}")
+    public void delete(@PathVariable Integer idCandidato) {
+        candidatoService.deleteCandidato(idCandidato);
     }
 }

@@ -5,12 +5,15 @@ import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
 import com.dbc.curriculo.dto.experiencia.ExperienciaCreateDTO;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.validator.constraints.br.CPF;
-import org.intellij.lang.annotations.RegExp;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +35,10 @@ public class CandidatoCreateDTO {
     @NonNull
     private LocalDate dataNascimento;
 
+    @Pattern(regexp = "\\d{11}", message = "O telefone deve ser composto pelo DDD seguido do número, sem simbolos. " +
+            "Ex. DDDDDDDDDDD.")
     @NotBlank
-    @Size(max = 14, message = "O número deve conter no máximo 14 caracteres")
+    @Size(max = 11, min = 11, message = "O número deve conter 11 dígitos.")
     private String telefone;
 
     @NotNull
@@ -41,8 +46,6 @@ public class CandidatoCreateDTO {
 
     @NotBlank
     private String cargo;
-
-    private String curriculoUrl;
 
     @NotNull
     private EnderecoCreateDTO endereco;
