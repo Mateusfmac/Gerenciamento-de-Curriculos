@@ -49,7 +49,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         DefaultError defaultError = new DefaultError();
         defaultError.setTimestamp(new Date());
         defaultError.setStatus(httpStatus.value());
-        defaultError.setMessage(exception);
+        defaultError.setErrors(List.of(exception));
         return new ResponseEntity<>(defaultError, httpStatus);
     }
 

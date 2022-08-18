@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public class DefaultError {
     private Date timestamp;
     @Schema(example = "400 || 401 || 404 || 500")
     private Integer status;
-    @Schema(example = "Alguma descrição de error!")
-    private String message;
+
+    private List<String> errors;
 
 }
