@@ -9,8 +9,8 @@ import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +35,7 @@ public interface DocumentationCandidatoController {
     )
     @MagiaResponse
     public ResponseEntity<CandidatoDTO> getCandidato(
-            @RequestParam("idCandidato") Integer idCandidato) throws CandidatoException;
+            @PathVariable("idCandidato") Integer idCandidato) throws CandidatoException;
 
     @Operation(
             summary = "Salva um candidato no banco de dados.",
@@ -64,6 +64,6 @@ public interface DocumentationCandidatoController {
             description = "Esse endpoint remove um candidato do banco de dados."
     )
     @MagiaResponse
-    public void delete(@RequestParam("idUsuario") Integer idUsuario);
+    public void delete(@PathVariable Integer idUsuario);
 
 }

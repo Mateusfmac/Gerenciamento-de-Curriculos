@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Base64;
 import java.util.Calendar;
 
@@ -42,7 +43,8 @@ public class AmazonS3Service {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);
             amazonS3.putObject(bucketName, fileName, inputStream, objectMetadata);
-            return amazonS3.getUrl(bucketName, fileName).toURI();
+            URL url = amazonS3.getUrl(bucketName, fileName);
+            return url.toURI();
         } catch (URISyntaxException e) {
             throw new S3Exception("Erro ao salvar arquivo");
         }

@@ -26,6 +26,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,6 +52,9 @@ public class CandidatoServiceTest {
 
     @Mock
     private AmazonS3 amazonS3;
+
+    @Mock
+    private AmazonS3Service amazonS3Service;
 
     private MockMultipartFile documento;
 
@@ -136,9 +141,10 @@ public class CandidatoServiceTest {
     }
 
 //    @Test
-//    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException, MalformedURLException {
+//    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
+//            MalformedURLException, URISyntaxException {
 //        URL url = new URL("https://stackoverflow.com");
-//
+//        URI uri = new URI("https://stackoverflow.com");
 //        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
 //        //CandidatoEntity candidatoEntity = get
 //
@@ -147,6 +153,7 @@ public class CandidatoServiceTest {
 //
 //        doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
 //        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(url);
+//
 //
 //        //doReturn(cand).when(candidatoRepository).save(any(CandidatoEntity.class));
 //
