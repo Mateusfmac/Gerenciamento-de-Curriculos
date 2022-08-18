@@ -41,6 +41,11 @@ public class CandidatoEntity {
     
     @Column(name = "curriculo_url")
     private String curriculoUrl;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco")
+    private EnderecoEntity enderecoEntity;
     
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,
@@ -63,11 +68,6 @@ public class CandidatoEntity {
             inverseJoinColumns = @JoinColumn(name = "id_vagas")
     )
     private Set<VagaEntity> vagaEntities;
-    
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id_endereco", referencedColumnName = "id_endereco")
-    private EnderecoEntity enderecoEntity;
 
 
     @Override

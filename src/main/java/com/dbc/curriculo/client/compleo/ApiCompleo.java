@@ -1,4 +1,4 @@
-package com.dbc.curriculo.anotations.api;
+package com.dbc.curriculo.client.compleo;
 
 import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
 import feign.HeaderMap;

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -151,9 +152,14 @@ public class CandidatoService {
     private CandidatoDadosDTO getDadoCandidato(CandidatoEntity candidato) {
         CandidatoDadosDTO candidatoDadosDTO =
                 objectMapper.convertValue(candidato, CandidatoDadosDTO.class);
-        List<VagaDTO> vagas = candidato.getVagaEntities()
-                .stream()
-                .map(this::vagaToVagaDTO).toList();
+
+        List<VagaDTO> vagas = new ArrayList<>();
+        if(candidato.getVagaEntities() != null){
+            vagas = candidato.getVagaEntities()
+                    .stream()
+                    .map(this::vagaToVagaDTO).toList();
+        }
+
         candidatoDadosDTO.setVagas(vagas);
         return candidatoDadosDTO;
     }
