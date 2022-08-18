@@ -3,6 +3,7 @@ package com.dbc.curriculo.controller;
 import com.dbc.curriculo.dto.candidato.CandidatoDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
+import com.dbc.curriculo.dto.candidato.CandidatoUpdateDTO;
 import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.service.CandidatoService;
@@ -46,9 +47,9 @@ public class CandidatoController {
         return ResponseEntity.ok(candidatoDTO);
     }
 
-    @PutMapping("/update-candidato/{idCandidato}")
-    public ResponseEntity<CandidatoDTO> updateCandidato(@Valid @RequestBody CandidatoCreateDTO candidatoCreateDTO, @PathVariable("idCandidato") Integer idCandidato) throws CandidatoException {
-        CandidatoDTO candidatoDTO = candidatoService.updateCandidato(candidatoCreateDTO, idCandidato);
+    @PutMapping("/update-candidato")
+    public ResponseEntity<CandidatoDTO> updateCandidato(@Valid @RequestBody CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException {
+        CandidatoDTO candidatoDTO = candidatoService.updateCandidato(candidatoUpdateDTO);
         return ResponseEntity.ok(candidatoDTO);
     }
 

@@ -26,7 +26,7 @@ public class CandidatoCreateDTO {
 
     @NotBlank
     @Schema(example = "87932766052", description = "O CPF deve ser válido, buscar na 4Devs para teste.")
-   // @CPF(message = "O CPF deve ser válido.")
+    @CPF(message = "O CPF deve ser válido.")
     private String cpf;
 
     @NonNull

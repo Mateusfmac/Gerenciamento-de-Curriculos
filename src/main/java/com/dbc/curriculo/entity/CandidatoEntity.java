@@ -45,12 +45,14 @@ public class CandidatoEntity {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
+            orphanRemoval = true,
             mappedBy = "candidatoEntity")
     private Set<EscolaridadeEntity> escolaridadeEntities;
     
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
+            orphanRemoval = true,
             mappedBy = "candidatoEntity")
     private Set<ExperienciaEntity> experienciaEntities;
     

@@ -1,9 +1,6 @@
 package com.dbc.curriculo.service;
 
-import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
-import com.dbc.curriculo.dto.candidato.CandidatoDTO;
-import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
-import com.dbc.curriculo.dto.candidato.CandidatoVagaDTO;
+import com.dbc.curriculo.dto.candidato.*;
 import com.dbc.curriculo.dto.endereco.EnderecoCreateDTO;
 import com.dbc.curriculo.dto.endereco.EnderecoDTO;
 import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
@@ -36,7 +33,7 @@ public class CandidatoService {
     private final CandidatoRepository candidatoRepository;
     private final AmazonS3Service amazonS3Service;
 
-    public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate){
+    public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate) {
         List<Integer> listIds = vagaCreate.stream().map(CandidatoVagaDTO::getIdCandidato).toList();
         return candidatoRepository.findAllById(listIds);
     }
@@ -46,10 +43,10 @@ public class CandidatoService {
                 .stream()
                 .map(this::getAllDadosCandidato)
                 .findFirst()
-                .orElseThrow(()-> new CandidatoException("Error ao buscar candidato"));
+                .orElseThrow(() -> new CandidatoException("Error ao buscar candidato"));
     }
 
-    public List<CandidatoDadosDTO> getAllCandidatoDTO(){
+    public List<CandidatoDadosDTO> getAllCandidatoDTO() {
         return candidatoRepository.findAll()
                 .stream().map(this::getDadoCandidato).toList();
     }
@@ -62,29 +59,23 @@ public class CandidatoService {
 
         validarSeCPFOrTelefoneJaEstaoCadastrado(candidato);
 
-        if(candidatoCreate.getEndereco() != null){
+        if (candidatoCreate.getEndereco() != null) {
             EnderecoEntity enderecoEntity = convertToEnderecoEntity(candidatoCreate.getEndereco());
             candidato.setEnderecoEntity(enderecoEntity);
-        } else {
-            candidato.setExperienciaEntities(Set.of());
         }
 
-        if(candidatoCreate.getEscolaridades() != null){
+        if (candidatoCreate.getEscolaridades() != null) {
             Set<EscolaridadeEntity> escolaridades = candidatoCreate.getEscolaridades().stream().map(
-                    esc-> convertToEscolaridadeEntity(esc, candidato)
+                    esc -> convertToEscolaridadeEntity(esc, candidato)
             ).collect(Collectors.toSet());
             candidato.setEscolaridadeEntities(escolaridades);
-        }else {
-            candidato.setEscolaridadeEntities(Set.of());
         }
 
-        if(candidatoCreate.getExperiencias() != null){
+        if (candidatoCreate.getExperiencias() != null) {
             Set<ExperienciaEntity> experiencias = candidatoCreate.getExperiencias().stream().map(
-                    exp-> convertToExperienciaEntity(exp, candidato)
+                    exp -> convertToExperienciaEntity(exp, candidato)
             ).collect(Collectors.toSet());
             candidato.setExperienciaEntities(experiencias);
-        } else {
-            candidato.setExperienciaEntities(Set.of());
         }
 
         URI amazonUri = amazonS3Service.uploadFile(documento);
@@ -104,57 +95,74 @@ public class CandidatoService {
         Optional<CandidatoEntity> candidatoNumero =
                 candidatoRepository.findByTelefone(candidato.getTelefone());
 
-        if(candidatoCPF.isPresent() && candidatoNumero.isPresent()){
+        if (candidatoCPF.isPresent() && candidatoNumero.isPresent()) {
             throw new CandidatoException("CPF já cadastrado e número já cadastrado.");
-        } else if(candidatoCPF.isPresent()){
+        } else if (candidatoCPF.isPresent()) {
             throw new CandidatoException("CPF já cadastrado.");
-        } else if(candidatoNumero.isPresent()){
+        } else if (candidatoNumero.isPresent()) {
             throw new CandidatoException("Número já cadastrado.");
         }
     }
 
-    public CandidatoDTO updateCandidato(CandidatoCreateDTO candidatoCreateDTO, Integer idCandidato) throws CandidatoException{
+    public CandidatoDTO updateCandidato(CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException {
 
-        //CandidatoEntity candidato = ;
+        CandidatoEntity candidato = candidatoRepository.findById(candidatoUpdateDTO.getIdCandidato())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new CandidatoException("N existe"));
 
-       CandidatoEntity candidato = candidatoRepository.findById(idCandidato).stream().findFirst().orElseThrow(()-> new CandidatoException("N existe"));
-
-        candidato.setNome(candidatoCreateDTO.getNome());
-
-        candidato.setCpf(candidatoCreateDTO.getCpf());
-
-        candidato.setCargo(candidatoCreateDTO.getCargo());
-
+        candidato.setNome(candidatoUpdateDTO.getNome());
+        candidato.setCpf(candidatoUpdateDTO.getCpf());
+        candidato.setCargo(candidatoUpdateDTO.getCargo());
         candidato.setCurriculoUrl(candidato.getCurriculoUrl());
+        candidato.setDataNascimento(candidatoUpdateDTO.getDataNascimento());
+        candidato.setSenioridade(candidatoUpdateDTO.getSenioridade());
+        candidato.setTelefone(candidatoUpdateDTO.getTelefone());
 
-        candidato.setDataNascimento(candidatoCreateDTO.getDataNascimento());
+        EnderecoEntity enderecoEntity = candidato.getEnderecoEntity();
 
-        candidato.setSenioridade(candidatoCreateDTO.getSenioridade());
+        enderecoEntity.setBairro(candidatoUpdateDTO.getEndereco().getBairro());
+        enderecoEntity.setCidade(candidatoUpdateDTO.getEndereco().getCidade());
+        enderecoEntity.setNumero(candidatoUpdateDTO.getEndereco().getNumero());
+        enderecoEntity.setLogradouro(candidatoUpdateDTO.getEndereco().getLogradouro());
 
-        candidato.setTelefone(candidatoCreateDTO.getTelefone());
+        if (candidatoUpdateDTO.getEscolaridades() != null) {
+            candidato.getEscolaridadeEntities().clear();
+            List<EscolaridadeEntity> escolaridades = candidatoUpdateDTO.getEscolaridades().stream().map(
+                    esc -> convertToEscolaridadeEntity(esc, candidato)
+            ).toList();
+            candidato.getEscolaridadeEntities().addAll(escolaridades);
+        }
 
+        if (candidatoUpdateDTO.getExperiencias() != null) {
+            candidato.getExperienciaEntities().clear();
+            List<ExperienciaEntity> experiencias = candidatoUpdateDTO.getExperiencias().stream().map(
+                    exp -> convertToExperienciaEntity(exp, candidato)
+            ).toList();
+            candidato.getExperienciaEntities().addAll(experiencias);
+        }
 
         candidatoRepository.save(candidato);
-        return converterCandidatoDTO(candidato);
+        return getAllDadosCandidato(candidato);
     }
 
-    public void deleteCandidato(Integer idCandidato){
+    public void deleteCandidato(Integer idCandidato) {
         candidatoRepository.deleteById(idCandidato);
     }
 
-    private CandidatoDadosDTO getDadoCandidato(CandidatoEntity candidato){
+    private CandidatoDadosDTO getDadoCandidato(CandidatoEntity candidato) {
         return objectMapper.convertValue(candidato, CandidatoDadosDTO.class);
     }
 
-    private CandidatoDTO getAllDadosCandidato(CandidatoEntity candidato){
+    private CandidatoDTO getAllDadosCandidato(CandidatoEntity candidato) {
         CandidatoDTO candidatoDTO = converterCandidatoDTO(candidato);
 
-        if(candidato.getEnderecoEntity() != null){
+        if (candidato.getEnderecoEntity() != null) {
             EnderecoDTO enderecoDTO = converterEnderecoDTO(candidato.getEnderecoEntity());
             candidatoDTO.setEndereco(enderecoDTO);
         }
 
-        if(candidato.getExperienciaEntities() != null){
+        if (candidato.getExperienciaEntities() != null) {
             List<ExperienciaDTO> experienciaDTOList =
                     candidato
                             .getExperienciaEntities()
@@ -163,7 +171,7 @@ public class CandidatoService {
             candidatoDTO.setExperiencia(experienciaDTOList);
         }
 
-        if(candidato.getEscolaridadeEntities() != null){
+        if (candidato.getEscolaridadeEntities() != null) {
             List<EscolaridadeDTO> escolaridadeDTOList =
                     candidato
                             .getEscolaridadeEntities()
@@ -174,47 +182,47 @@ public class CandidatoService {
         return candidatoDTO;
     }
 
-    private CandidatoEntity convertToCandidatoEntity(CandidatoCreateDTO candidatoCreate){
+    private CandidatoEntity convertToCandidatoEntity(CandidatoCreateDTO candidatoCreate) {
         return objectMapper.convertValue(candidatoCreate, CandidatoEntity.class);
     }
 
-    private CandidatoEntity convertCandidatoEntity(CandidatoDTO candidatoDTO){
+    private CandidatoEntity convertCandidatoEntity(CandidatoDTO candidatoDTO) {
         return objectMapper.convertValue(candidatoDTO, CandidatoEntity.class);
     }
 
-    private CandidatoDTO converterCandidatoDTO(CandidatoEntity candidatoEntity){
+    private CandidatoDTO converterCandidatoDTO(CandidatoEntity candidatoEntity) {
         return objectMapper.convertValue(candidatoEntity, CandidatoDTO.class);
     }
 
-    private EnderecoEntity convertToEnderecoEntity(EnderecoCreateDTO enderecoCreate){
+    private EnderecoEntity convertToEnderecoEntity(EnderecoCreateDTO enderecoCreate) {
         return objectMapper.convertValue(enderecoCreate, EnderecoEntity.class);
     }
 
-    private EnderecoDTO converterEnderecoDTO(EnderecoEntity enderecoEntity){
+    private EnderecoDTO converterEnderecoDTO(EnderecoEntity enderecoEntity) {
         return objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
     }
 
     private EscolaridadeEntity convertToEscolaridadeEntity(EscolaridadeCreateDTO escolaridadeCreate,
-                                                          CandidatoEntity candidato){
+                                                           CandidatoEntity candidato) {
         EscolaridadeEntity escolaridadeEntity = objectMapper
                 .convertValue(escolaridadeCreate, EscolaridadeEntity.class);
         escolaridadeEntity.setCandidatoEntity(candidato);
         return escolaridadeEntity;
     }
 
-    private EscolaridadeDTO converterEscolaridadeDTO(EscolaridadeEntity escolaridadeEntity){
+    private EscolaridadeDTO converterEscolaridadeDTO(EscolaridadeEntity escolaridadeEntity) {
         return objectMapper.convertValue(escolaridadeEntity, EscolaridadeDTO.class);
     }
 
     private ExperienciaEntity convertToExperienciaEntity(ExperienciaCreateDTO experienciaCreateDTO,
-                                                        CandidatoEntity candidato){
+                                                         CandidatoEntity candidato) {
         ExperienciaEntity escolaridadeEntity = objectMapper
                 .convertValue(experienciaCreateDTO, ExperienciaEntity.class);
         escolaridadeEntity.setCandidatoEntity(candidato);
         return escolaridadeEntity;
     }
 
-    private ExperienciaDTO converterExperienciaDTO(ExperienciaEntity experienciaEntity){
+    private ExperienciaDTO converterExperienciaDTO(ExperienciaEntity experienciaEntity) {
         return objectMapper.convertValue(experienciaEntity, ExperienciaDTO.class);
     }
 
