@@ -5,9 +5,11 @@ import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
 import com.dbc.curriculo.dto.experiencia.ExperienciaCreateDTO;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.validator.constraints.br.CPF;
-import org.intellij.lang.annotations.RegExp;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -41,8 +43,6 @@ public class CandidatoCreateDTO {
 
     @NotBlank
     private String cargo;
-
-    private String curriculoUrl;
 
     @NotNull
     private EnderecoCreateDTO endereco;

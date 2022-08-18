@@ -1,10 +1,16 @@
 package com.dbc.curriculo.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
+import com.dbc.curriculo.dto.endereco.EnderecoCreateDTO;
+import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
+import com.dbc.curriculo.dto.experiencia.ExperienciaCreateDTO;
 import com.dbc.curriculo.entity.*;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
@@ -23,9 +30,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CandidatoServiceTest {
@@ -36,10 +45,12 @@ public class CandidatoServiceTest {
     @Mock
     private CandidatoRepository candidatoRepository;
 
-    @Mock
-    private AmazonS3Service amazonS3Service;
-
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Mock
+    private AmazonS3 amazonS3;
+
+    private MockMultipartFile documento;
 
     @Before
     public void init() {
@@ -48,6 +59,12 @@ public class CandidatoServiceTest {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         ReflectionTestUtils.setField(candidatoService, "objectMapper", objectMapper);
+
+        documento = new MockMultipartFile(
+                "arquivo.pdf",
+                "arquivo",
+                "application/pdf",
+                "{key1: value1}".getBytes());
     }
 
     @Test
@@ -78,6 +95,65 @@ public class CandidatoServiceTest {
 
     }
 
+    @Test(expected = CandidatoException.class)
+    public void deveTestarErrorSeCPFouTelefoneJaCadastrado() throws S3Exception, CandidatoException {
+
+        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoEntity candidatoEntity = getCandidatoAllDados();
+
+        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.of(candidatoEntity));
+        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.of(candidatoEntity));
+
+        candidatoService.saveCandidato(candidatoCreateDTO, documento);
+
+    }
+
+    @Test(expected = CandidatoException.class)
+    public void deveTestarErrorSeCPFJaCadastradoMasTelefoneNao() throws S3Exception, CandidatoException {
+
+        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoEntity candidatoEntity = getCandidatoAllDados();
+
+        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.of(candidatoEntity));
+        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
+
+        candidatoService.saveCandidato(candidatoCreateDTO, documento);
+
+    }
+
+    @Test(expected = CandidatoException.class)
+    public void deveTestarErrorSeTelefoneJaCadastradoMasCPFNao() throws S3Exception, CandidatoException {
+
+        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+        CandidatoEntity candidatoEntity = getCandidatoAllDados();
+
+        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
+        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.of(candidatoEntity));
+
+        candidatoService.saveCandidato(candidatoCreateDTO, documento);
+
+    }
+
+//    @Test
+//    public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
+//            IOException,
+//            URISyntaxException {
+//        URL url = new URL("https://stackoverflow.com");
+//
+//        CandidatoCreateDTO candidatoCreateDTO = getGandidadoCreateDTO();
+//
+//        when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
+//        when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
+//
+//        doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
+//        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(uri.toURL());
+//
+//        doNothing().when(candidatoRepository).save(any(CandidatoEntity.class));
+//
+//        candidatoService.saveCandidato(candidatoCreateDTO, documento);
+//
+//    }
+
     private CandidatoEntity getCandidatoAllDados(){
         CandidatoEntity candidato = new CandidatoEntity();
         candidato.setIdCandidato(1);
@@ -88,14 +164,25 @@ public class CandidatoServiceTest {
         candidato.setSenioridade(TipoSenioridade.ESPECIALISTA);
         candidato.setCargo("Desenvolvedora mobile - IOS");
         candidato.setCurriculoUrl("https://github.com");
-        candidato.setEnderecoEntity(createEnderecoEntity());
-        candidato.setEscolaridadeEntities(Set.of(getEscolaridade(candidato)));
-        candidato.setExperienciaEntities(Set.of(getExperiencia(candidato)));
-        candidato.setVagaEntities(Set.of(getVagas(candidato)));
+
+        candidato.setEnderecoEntity(getEnderecoEntity());
+
+        EscolaridadeEntity escolaridadeEntity = getEscolaridade();
+        escolaridadeEntity.setCandidatoEntity(candidato);
+        candidato.setEscolaridadeEntities(Set.of(escolaridadeEntity));
+
+        ExperienciaEntity experienciaEntity = getExperiencia();
+        experienciaEntity.setCandidatoEntity(candidato);
+        candidato.setExperienciaEntities(Set.of(experienciaEntity));
+
+        VagaEntity vagaEntity = getVagas();
+        vagaEntity.setCandidatoEntities(Set.of(candidato));
+        candidato.setVagaEntities(Set.of(vagaEntity));
+
         return candidato;
     }
 
-    private EnderecoEntity createEnderecoEntity(){
+    private EnderecoEntity getEnderecoEntity(){
         EnderecoEntity enderecoEntity = new EnderecoEntity();
         enderecoEntity.setIdEndereco(1);
         enderecoEntity.setNumero(202);
@@ -105,11 +192,10 @@ public class CandidatoServiceTest {
         return enderecoEntity;
     }
 
-    private EscolaridadeEntity getEscolaridade(CandidatoEntity candidato) {
+    private EscolaridadeEntity getEscolaridade() {
         EscolaridadeEntity escolaridadeEntity = new EscolaridadeEntity();
         escolaridadeEntity.setIdEscolaridade(10);
         escolaridadeEntity.setInstituicao("SENAI");
-        escolaridadeEntity.setCandidatoEntity(candidato);
         escolaridadeEntity.setDataInicio(LocalDate.parse("2011-01-27"));
         escolaridadeEntity.setDataFim(LocalDate.parse("2013-12-17"));
         escolaridadeEntity.setDescricao("Curso sobre desenvolvimento mobile");
@@ -117,10 +203,10 @@ public class CandidatoServiceTest {
         return escolaridadeEntity;
     }
 
-    private ExperienciaEntity getExperiencia(CandidatoEntity candidato){
+    private ExperienciaEntity getExperiencia(){
         ExperienciaEntity experiencia = new ExperienciaEntity();
         experiencia.setIdExperiencia(10);
-        experiencia.setCandidatoEntity(candidato);
+
         experiencia.setCargo("Desenvolvedor mobile.");
         experiencia.setInstituicao("Solução TI");
         experiencia.setDataInicio(LocalDate.parse("2018-01-01"));
@@ -129,8 +215,34 @@ public class CandidatoServiceTest {
         return experiencia;
     }
 
-    private VagaEntity getVagas(CandidatoEntity candidato){
-        return new VagaEntity(1, Set.of(candidato));
+    private VagaEntity getVagas(){
+        VagaEntity vaga = new VagaEntity();
+        vaga.setIdVaga(1);
+        return vaga;
+    }
+
+    private CandidatoCreateDTO getGandidadoCreateDTO(){
+        CandidatoCreateDTO candidatoCreateDTO = new CandidatoCreateDTO();
+
+        candidatoCreateDTO.setNome("Rafael");
+        candidatoCreateDTO.setDataNascimento(LocalDate.parse("1995-10-10"));
+        candidatoCreateDTO.setCargo("Desenvolvedor Junior");
+        candidatoCreateDTO.setSenioridade(TipoSenioridade.ESPECIALISTA);
+        candidatoCreateDTO.setCpf("69805926109");
+        candidatoCreateDTO.setTelefone("81927277790");
+
+        EnderecoCreateDTO enderecoCreateDTO = objectMapper
+                .convertValue(getEnderecoEntity(), EnderecoCreateDTO.class);
+        ExperienciaCreateDTO experienciaCreateDTO = objectMapper
+                .convertValue(getExperiencia(), ExperienciaCreateDTO.class);
+        EscolaridadeCreateDTO escolaridadeCreateDTO = objectMapper
+                .convertValue(getEscolaridade(), EscolaridadeCreateDTO.class);
+
+        candidatoCreateDTO.setEndereco(enderecoCreateDTO);
+        candidatoCreateDTO.setExperiencias(List.of(experienciaCreateDTO));
+        candidatoCreateDTO.setEscolaridades(List.of(escolaridadeCreateDTO));
+
+        return candidatoCreateDTO;
     }
 
 }
