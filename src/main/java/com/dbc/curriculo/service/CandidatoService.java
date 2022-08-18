@@ -7,10 +7,8 @@ import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
 import com.dbc.curriculo.dto.escolaridade.EscolaridadeDTO;
 import com.dbc.curriculo.dto.experiencia.ExperienciaCreateDTO;
 import com.dbc.curriculo.dto.experiencia.ExperienciaDTO;
-import com.dbc.curriculo.entity.CandidatoEntity;
-import com.dbc.curriculo.entity.EnderecoEntity;
-import com.dbc.curriculo.entity.EscolaridadeEntity;
-import com.dbc.curriculo.entity.ExperienciaEntity;
+import com.dbc.curriculo.dto.vaga.VagaDTO;
+import com.dbc.curriculo.entity.*;
 import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.repository.CandidatoRepository;
@@ -151,7 +149,13 @@ public class CandidatoService {
     }
 
     private CandidatoDadosDTO getDadoCandidato(CandidatoEntity candidato) {
-        return objectMapper.convertValue(candidato, CandidatoDadosDTO.class);
+        CandidatoDadosDTO candidatoDadosDTO =
+                objectMapper.convertValue(candidato, CandidatoDadosDTO.class);
+        List<VagaDTO> vagas = candidato.getVagaEntities()
+                .stream()
+                .map(this::vagaToVagaDTO).toList();
+        candidatoDadosDTO.setVagas(vagas);
+        return candidatoDadosDTO;
     }
 
     private CandidatoDTO getAllDadosCandidato(CandidatoEntity candidato) {
@@ -184,10 +188,6 @@ public class CandidatoService {
 
     private CandidatoEntity convertToCandidatoEntity(CandidatoCreateDTO candidatoCreate) {
         return objectMapper.convertValue(candidatoCreate, CandidatoEntity.class);
-    }
-
-    private CandidatoEntity convertCandidatoEntity(CandidatoDTO candidatoDTO) {
-        return objectMapper.convertValue(candidatoDTO, CandidatoEntity.class);
     }
 
     private CandidatoDTO converterCandidatoDTO(CandidatoEntity candidatoEntity) {
@@ -226,4 +226,7 @@ public class CandidatoService {
         return objectMapper.convertValue(experienciaEntity, ExperienciaDTO.class);
     }
 
+    private VagaDTO vagaToVagaDTO(VagaEntity vagaEntity){
+        return objectMapper.convertValue(vagaEntity, VagaDTO.class);
+    }
 }

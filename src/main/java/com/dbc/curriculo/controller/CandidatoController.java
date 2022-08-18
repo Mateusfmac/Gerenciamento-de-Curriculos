@@ -1,5 +1,6 @@
 package com.dbc.curriculo.controller;
 
+import com.dbc.curriculo.documentation.DocumentationCandidatoController;
 import com.dbc.curriculo.dto.candidato.CandidatoDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/candidato")
 @Validated
-public class CandidatoController {
+public class CandidatoController implements DocumentationCandidatoController {
 
     private final CandidatoService candidatoService;
 
@@ -48,7 +49,8 @@ public class CandidatoController {
     }
 
     @PutMapping("/update-candidato")
-    public ResponseEntity<CandidatoDTO> updateCandidato(@Valid @RequestBody CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException {
+    public ResponseEntity<CandidatoDTO> updateCandidato(
+            @Valid @RequestBody CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException {
         CandidatoDTO candidatoDTO = candidatoService.updateCandidato(candidatoUpdateDTO);
         return ResponseEntity.ok(candidatoDTO);
     }

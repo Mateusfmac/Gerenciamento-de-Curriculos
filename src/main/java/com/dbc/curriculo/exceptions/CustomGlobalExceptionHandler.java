@@ -46,11 +46,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @NotNull
     private ResponseEntity<Object> returnError(String exception, HttpStatus httpStatus) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date());
-        body.put("status", httpStatus.value());
-        body.put("message", exception);
-        return new ResponseEntity<>(body, httpStatus);
+        DefaultError defaultError = new DefaultError();
+        defaultError.setTimestamp(new Date());
+        defaultError.setStatus(httpStatus.value());
+        defaultError.setMessage(exception);
+        return new ResponseEntity<>(defaultError, httpStatus);
     }
 
     @ExceptionHandler(DisabledException.class)

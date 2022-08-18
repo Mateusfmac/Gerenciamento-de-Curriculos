@@ -11,10 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +34,17 @@ public class VagaService {
         List<CandidatoEntity> candidatos = candidatoService
                 .getAllCandidatoEntityById(vagaCreateDTO.getCandidatos());
 
-        Optional<VagaEntity> vagaOptional = vagaRepository.findById(vagaCreateDTO.getIdVaga());
+        Optional<VagaEntity> vagaOptional = vagaRepository
+                .findById(vagaCreateDTO.getIdVaga());
 
-        VagaEntity vagaEntity = vagaOptional.orElseGet(() -> convertToVagaEntity(vagaCreateDTO));
+        VagaEntity vagaEntity = vagaOptional
+                .orElseGet(() -> convertToVagaEntity(vagaCreateDTO));
 
-        Set<CandidatoEntity> candidatoEntitySet = vagaEntity.getCandidatoEntities();
+        Set<CandidatoEntity> candidatoEntitySet = new HashSet<>();
+        if(vagaEntity.getCandidatoEntities() != null){
+            candidatoEntitySet = vagaEntity.getCandidatoEntities();
+        }
+
         candidatoEntitySet.addAll(candidatos);
         vagaEntity.setCandidatoEntities(candidatoEntitySet);
         vagaRepository.save(vagaEntity);
