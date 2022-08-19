@@ -10,11 +10,13 @@ CREATE SEQUENCE user_id START 1;
 
 create table endereco(
 	id_endereco integer,
+	cep text not null,
 	numero integer not null,
 	logradouro text not null,
 	bairro text not null,
 	cidade text not null,
 	primary key (id_endereco)
+	on delete cascade
 );
 
 create sequence seq_endereco

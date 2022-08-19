@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 public class EnderecoCreateDTO {
 
     @NotNull
+    private String cep;
+    @NotNull
     private Integer numero;
     @NotBlank
     private String logradouro;
