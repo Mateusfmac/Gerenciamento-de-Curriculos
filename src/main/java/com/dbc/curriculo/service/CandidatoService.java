@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class CandidatoService {
 
 
     public CandidatoDadosDTO saveCandidato(CandidatoCreateDTO candidatoCreate,
-                                           MultipartFile documento) throws S3Exception, CandidatoException {
+                                           MultipartFile documento) throws S3Exception, CandidatoException, IOException {
 
         CandidatoEntity candidato = convertToCandidatoEntity(candidatoCreate);
 

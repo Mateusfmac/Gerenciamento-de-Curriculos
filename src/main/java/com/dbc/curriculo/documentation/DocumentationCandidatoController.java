@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 public interface DocumentationCandidatoController {
@@ -47,7 +48,7 @@ public interface DocumentationCandidatoController {
     public ResponseEntity<CandidatoDadosDTO> save(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
             @Valid @NotNull @RequestPart("documento") MultipartFile documento)
-            throws S3Exception, CandidatoException;
+            throws S3Exception, CandidatoException, IOException;
 
     @Operation(
             summary = "Atualizar dados candidato.",

@@ -23,22 +23,22 @@ public class AmazonS3Service {
     @Value("${s3.bucket}")
     private String bucketName;
 
+
     private final AmazonS3 amazonS3;
 
-    public URI uploadFile(MultipartFile multipartFile) throws S3Exception {
-        try {
-            InputStream inputStream = multipartFile.getInputStream();
-            String fileName = Calendar.getInstance().toString() + multipartFile.getOriginalFilename();
-            fileName = Base64.getEncoder().encodeToString(
-                            fileName.getBytes());
-            String contentType = multipartFile.getContentType();
-            return uploadFile(inputStream, fileName, contentType);
-        } catch (IOException e) {
-            throw new S3Exception("Erro ao salvar arquivo.");
-        }
+    public URI uploadFile(MultipartFile multipartFile) throws S3Exception, IOException {
+
+        InputStream inputStream = multipartFile.getInputStream();
+        String fileName = Calendar.getInstance().toString() + multipartFile.getOriginalFilename();
+        fileName = Base64.getEncoder().encodeToString(
+                fileName.getBytes());
+        String contentType = multipartFile.getContentType();
+        return uploadFile(inputStream, fileName, contentType);
     }
 
-    public URI uploadFile(InputStream inputStream, String fileName, String contentType) throws S3Exception {
+    public URI uploadFile(InputStream inputStream, String fileName, String contentType)
+            throws S3Exception {
+
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);

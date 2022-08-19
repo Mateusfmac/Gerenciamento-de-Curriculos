@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,6 +97,12 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<Object> handleException(LoginException exception) {
         return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<Object> handleException(IOException exception) {
+        String mensagem = "Error response: Service Unavailable.";
+        return returnError(mensagem, HttpStatus.BAD_REQUEST);
     }
 
 

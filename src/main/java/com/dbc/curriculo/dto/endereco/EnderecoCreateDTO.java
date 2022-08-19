@@ -14,12 +14,16 @@ public class EnderecoCreateDTO {
 
     @NotNull
     private String cep;
+
     @NotNull
     private Integer numero;
+
     @NotBlank
     private String logradouro;
+
     @NotBlank
     private String bairro;
+
     @NotBlank
     private String cidade;
 

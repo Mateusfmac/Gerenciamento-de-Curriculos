@@ -23,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,7 +33,7 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CandidatoServiceTest {
@@ -97,7 +98,9 @@ public class CandidatoServiceTest {
     }
 
     @Test(expected = CandidatoException.class)
-    public void deveTestarErrorSeCPFouTelefoneJaCadastrado() throws S3Exception, CandidatoException {
+    public void deveTestarErrorSeCPFouTelefoneJaCadastrado() throws
+            S3Exception,
+            CandidatoException, IOException {
 
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
@@ -110,7 +113,7 @@ public class CandidatoServiceTest {
     }
 
     @Test(expected = CandidatoException.class)
-    public void deveTestarErrorSeCPFJaCadastradoMasTelefoneNao() throws S3Exception, CandidatoException {
+    public void deveTestarErrorSeCPFJaCadastradoMasTelefoneNao() throws S3Exception, CandidatoException, IOException {
 
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
@@ -123,7 +126,7 @@ public class CandidatoServiceTest {
     }
 
     @Test(expected = CandidatoException.class)
-    public void deveTestarErrorSeTelefoneJaCadastradoMasCPFNao() throws S3Exception, CandidatoException {
+    public void deveTestarErrorSeTelefoneJaCadastradoMasCPFNao() throws S3Exception, CandidatoException, IOException {
 
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
@@ -137,7 +140,7 @@ public class CandidatoServiceTest {
 
     @Test
     public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
-            MalformedURLException, URISyntaxException {
+            IOException, URISyntaxException {
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         URL url = new URL(
                 "https",

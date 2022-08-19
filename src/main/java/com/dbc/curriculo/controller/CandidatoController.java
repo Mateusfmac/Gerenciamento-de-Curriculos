@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -43,7 +44,7 @@ public class CandidatoController implements DocumentationCandidatoController {
     public ResponseEntity<CandidatoDadosDTO> save(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
             @Valid @NotNull @RequestPart("documento") MultipartFile documento)
-            throws S3Exception, CandidatoException {
+            throws S3Exception, CandidatoException, IOException {
         CandidatoDadosDTO candidatoDTO = candidatoService.saveCandidato(candidato, documento);
         return ResponseEntity.ok(candidatoDTO);
     }

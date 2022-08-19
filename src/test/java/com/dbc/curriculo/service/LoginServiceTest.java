@@ -2,9 +2,11 @@ package com.dbc.curriculo.service;
 
 import com.dbc.curriculo.dto.login.LoginCredenciaisDTO;
 import com.dbc.curriculo.dto.login.LoginDTO;
+import com.dbc.curriculo.dto.token.TokenDTO;
 import com.dbc.curriculo.entity.LoginEntity;
 import com.dbc.curriculo.exceptions.LoginException;
 import com.dbc.curriculo.repository.LoginRepository;
+import com.dbc.curriculo.security.TokenService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -20,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.Assert.*;
@@ -27,6 +30,7 @@ import static org.junit.Assert.*;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,6 +42,12 @@ public class LoginServiceTest {
     @Mock
     private LoginRepository loginRepository;
 
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private TokenService tokenService;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
@@ -47,6 +57,7 @@ public class LoginServiceTest {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         ReflectionTestUtils.setField(loginService, "objectMapper", objectMapper);
+
     }
 
     @Test
@@ -66,13 +77,13 @@ public class LoginServiceTest {
     }
 
     @Test(expected = LoginException.class)
-    public void deveTestarGetUsuarioLogadoSemSucesso() throws LoginException {
+    public void deveTestarGetUsuarioLogadoSemSucessoComException() throws LoginException {
         LoginEntity loginEntity = getLoginEntity();
-        loginEntity.setIdLogin(null);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(null, null);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        loginService.getUsuarioLogado();
 
-        LoginDTO loginDTO = loginService.getUsuarioLogado();
-
-        assertNotNull(loginDTO.getIdLogin());
     }
 
     @Test
@@ -109,15 +120,33 @@ public class LoginServiceTest {
         assertEquals(loginDTO.getEmail(), loginEntity.getEmail());
     }
 
-    /*@Test
+    @Test
     public void deveTestarAutenticarToken() {
         LoginCredenciaisDTO loginCredenciaisDTO = getLoginCredenciaisDTO();
+        LoginEntity loginEntity = getLoginEntity();
+        Authentication authentication = mock(Authentication.class);
+        String tokenString = "eyJhbGciOiJIUzI1NiJ9";
+
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginCredenciaisDTO.getEmail(),
                         loginCredenciaisDTO.getSenha());
 
-    }*/
+        when(authenticationManager.authenticate(authenticationToken))
+                .thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(loginEntity);
+        when(tokenService.getToken(loginEntity)).thenReturn(tokenString);
+
+        TokenDTO tokenDTO =
+                loginService.autenticarTokenLogin(
+                loginCredenciaisDTO,
+                authenticationManager);
+
+        assertNotNull(tokenDTO);
+        assertEquals(tokenString,tokenDTO.getToken());
+
+
+    }
 
     private LoginEntity getLoginEntity() {
         LoginEntity loginEntity = new LoginEntity();

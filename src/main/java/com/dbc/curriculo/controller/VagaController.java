@@ -26,7 +26,7 @@ public class VagaController implements DocumentationVagaController {
 
     @PostMapping
     public void adicionarCandidato(@RequestBody VagaCreateDTO vagaCreate) {
-        vagaService.addicionarCandidatosVaga(vagaCreate);
+        vagaService.adicionarCandidatosVaga(vagaCreate);
     }
 
 }

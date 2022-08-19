@@ -29,7 +29,7 @@ public class VagaService {
     }
 
 
-    public void addicionarCandidatosVaga(VagaCreateDTO vagaCreateDTO) {
+    public void adicionarCandidatosVaga(VagaCreateDTO vagaCreateDTO) {
 
         List<CandidatoEntity> candidatos = candidatoService
                 .getAllCandidatoEntityById(vagaCreateDTO.getCandidatos());
