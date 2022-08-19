@@ -34,6 +34,9 @@ public class EnderecoEntity {
 
     @Column(name = "cep")
     private String cep;
+
+    @Column(name = "estado")
+    private String estado;
     
     @JsonIgnore
     @OneToOne(
