@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,7 +30,8 @@ public class CandidatoCreateDTO {
     @CPF(message = "O CPF deve ser válido.")
     private String cpf;
 
-    @NonNull
+    @NotNull
+    @Past(message = "data de nascimento deve estar no passado")
     private LocalDate dataNascimento;
 
     @Pattern(regexp = "\\d{11}", message = "O telefone deve ser composto pelo DDD seguido do número, sem simbolos. " +
@@ -48,10 +47,13 @@ public class CandidatoCreateDTO {
     private String cargo;
 
     @NotNull
+    @Valid
     private EnderecoCreateDTO endereco;
 
+    @Valid
     private List<EscolaridadeCreateDTO> escolaridades;
 
+    @Valid
     private List<ExperienciaCreateDTO> experiencias;
 
 }
