@@ -1,6 +1,5 @@
 package com.dbc.curriculo.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.dbc.curriculo.dto.candidato.*;
 import com.dbc.curriculo.dto.endereco.EnderecoCreateDTO;
 import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
@@ -48,9 +47,6 @@ public class CandidatoServiceTest {
     private CandidatoRepository candidatoRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Mock
-    private AmazonS3 amazonS3;
 
     @Mock
     private AmazonS3Service amazonS3Service;
