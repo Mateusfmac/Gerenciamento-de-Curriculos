@@ -51,6 +51,8 @@ public class EnderecoEntity {
                 ", logradouro='" + logradouro + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
+                ", cep='" + cep + '\'' +
+                ", candidatoEntity=" + candidatoEntity +
                 '}';
     }
 }

@@ -92,7 +92,7 @@ public class CandidatoService {
         CandidatoEntity candidato = candidatoRepository.findById(candidatoUpdateDTO.getIdCandidato())
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new CandidatoException("N existe"));
+                .orElseThrow(() -> new CandidatoException("Candidato não encontrado"));
 
         candidato.setNome(candidatoUpdateDTO.getNome());
         candidato.setCpf(candidatoUpdateDTO.getCpf());
