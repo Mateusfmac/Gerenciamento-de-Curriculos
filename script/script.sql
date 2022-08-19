@@ -10,7 +10,7 @@ CREATE SEQUENCE user_id START 1;
 
 create table endereco(
 	id_endereco integer,
-	cep text not null,
+	cep char(8) not null,
 	numero integer not null,
 	logradouro text not null,
 	bairro text not null,

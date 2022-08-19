@@ -37,14 +37,6 @@ public class EnderecoEntity {
 
     @Column(name = "estado")
     private String estado;
-    
-    @JsonIgnore
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            mappedBy = "enderecoEntity")
-    private CandidatoEntity candidatoEntity;
 
     @Override
     public String toString() {
@@ -55,7 +47,17 @@ public class EnderecoEntity {
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
                 ", cep='" + cep + '\'' +
+                ", estado='" + estado + '\'' +
                 ", candidatoEntity=" + candidatoEntity +
                 '}';
     }
+
+    @JsonIgnore
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "enderecoEntity")
+    private CandidatoEntity candidatoEntity;
+
 }
