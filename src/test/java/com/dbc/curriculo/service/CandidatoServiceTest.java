@@ -8,6 +8,7 @@ import com.dbc.curriculo.dto.experiencia.ExperienciaCreateDTO;
 import com.dbc.curriculo.entity.*;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.CandidatoValidarException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -97,8 +98,8 @@ public class CandidatoServiceTest {
 
     }
 
-    @Test(expected = CandidatoException.class)
-    public void deveTestarErrorSeCPFouTelefoneJaCadastrado() throws S3Exception, CandidatoException {
+    @Test(expected = CandidatoValidarException.class)
+    public void deveTestarErrorSeCPFouTelefoneJaCadastrado() throws S3Exception, CandidatoException, CandidatoValidarException {
 
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
@@ -110,8 +111,8 @@ public class CandidatoServiceTest {
 
     }
 
-    @Test(expected = CandidatoException.class)
-    public void deveTestarErrorSeCPFJaCadastradoMasTelefoneNao() throws S3Exception, CandidatoException {
+    @Test(expected = CandidatoValidarException.class)
+    public void deveTestarErrorSeCPFJaCadastradoMasTelefoneNao() throws S3Exception, CandidatoException, CandidatoValidarException {
 
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
@@ -123,8 +124,8 @@ public class CandidatoServiceTest {
 
     }
 
-    @Test(expected = CandidatoException.class)
-    public void deveTestarErrorSeTelefoneJaCadastradoMasCPFNao() throws S3Exception, CandidatoException {
+    @Test(expected = CandidatoValidarException.class)
+    public void deveTestarErrorSeTelefoneJaCadastradoMasCPFNao() throws S3Exception, CandidatoException, CandidatoValidarException {
 
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         CandidatoEntity candidatoEntity = getCandidatoAllDados();
@@ -138,7 +139,7 @@ public class CandidatoServiceTest {
 
     @Test
     public void deveTestarSaveCandidato() throws S3Exception, CandidatoException,
-            MalformedURLException, URISyntaxException {
+            MalformedURLException, URISyntaxException, CandidatoValidarException {
         CandidatoCreateDTO candidatoCreateDTO = getCandidadoCreateDTO();
         URL url = new URL(
                 "https",
@@ -156,15 +157,16 @@ public class CandidatoServiceTest {
     }
 
     @Test
-    public void deveTestarDeleteComSucesso() {
-        Integer idDeletar = 1;
+    public void deveTestarDeleteComSucesso() throws CandidatoException {
         CandidatoEntity candidato = getCandidatoAllDados();
+        Integer idDeletar = 1;
 
-        doNothing().when(candidatoRepository).deleteById(anyInt());
+        when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidato));
+        doNothing().when(candidatoRepository).delete(any(CandidatoEntity.class));
 
         candidatoService.deleteCandidato(idDeletar);
 
-        verify(candidatoRepository, times(1)).deleteById(anyInt());
+        verify(candidatoRepository, times(1)).delete(any(CandidatoEntity.class));
 
     }
 

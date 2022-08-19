@@ -6,6 +6,7 @@ import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoUpdateDTO;
 import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.CandidatoValidarException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.service.CandidatoService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class CandidatoController implements DocumentationCandidatoController {
     public ResponseEntity<CandidatoDadosDTO> save(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
             @Valid @NotNull @RequestPart("documento") MultipartFile documento)
-            throws S3Exception, CandidatoException {
+            throws S3Exception, CandidatoException, CandidatoValidarException {
         CandidatoDadosDTO candidatoDTO = candidatoService.saveCandidato(candidato, documento);
         return ResponseEntity.ok(candidatoDTO);
     }
@@ -56,7 +57,7 @@ public class CandidatoController implements DocumentationCandidatoController {
     }
 
     @DeleteMapping("/{idCandidato}")
-    public void delete(@PathVariable Integer idCandidato) {
+    public void delete(@PathVariable("idCandidato") Integer idCandidato) throws CandidatoException {
         candidatoService.deleteCandidato(idCandidato);
     }
 }

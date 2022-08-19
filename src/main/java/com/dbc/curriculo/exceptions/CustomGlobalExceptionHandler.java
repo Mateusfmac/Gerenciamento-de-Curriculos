@@ -90,6 +90,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(CandidatoException.class)
     public ResponseEntity<Object> handleException(CandidatoException exception) {
+        return returnError(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CandidatoValidarException.class)
+    public ResponseEntity<Object> handleException(CandidatoValidarException exception) {
         return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
