@@ -26,7 +26,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -37,7 +36,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CandidatoServiceTest {
@@ -152,8 +151,6 @@ public class CandidatoServiceTest {
         when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
         when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
 
-        //doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
-        //when(amazonS3.getUrl(anyString(), anyString())).thenReturn(url);
         when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
         candidatoService.saveCandidato(candidatoCreateDTO, documento);
 
