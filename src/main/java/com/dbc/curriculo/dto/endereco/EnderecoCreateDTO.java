@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Data
 public class EnderecoCreateDTO {
 
-    @Pattern(regexp = "\\d{8}", message = "O cep deve estar no seguinte formato" + ": 00000000")
+    @Pattern(regexp = "^[0-9]{8}$", message = "O cep deve estar no seguinte formato" + ": 00000000")
     @NotBlank
     @Size(max = 8, min = 8, message = "O cep deve conter 8 dígitos")
     private String cep;
@@ -31,7 +31,7 @@ public class EnderecoCreateDTO {
     @NotBlank
     private String cidade;
     @NotBlank
-    @Size(min = 2, max = 2)
+    @Size(min = 2, max = 2, message = "O estado deve conter apenas 2 letras")
     private String estado;
 
 }

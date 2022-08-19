@@ -257,6 +257,7 @@ public class CandidatoServiceTest {
         enderecoEntity.setLogradouro("Rua Paulo de Frontin");
         enderecoEntity.setBairro("Imbiribeira");
         enderecoEntity.setCidade("Recife");
+        enderecoEntity.setEstado("SP");
         return enderecoEntity;
     }
 

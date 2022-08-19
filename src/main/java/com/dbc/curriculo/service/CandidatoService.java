@@ -115,6 +115,7 @@ public class CandidatoService {
         enderecoEntity.setBairro(candidatoUpdateDTO.getEndereco().getBairro());
         enderecoEntity.setCidade(candidatoUpdateDTO.getEndereco().getCidade());
         enderecoEntity.setNumero(candidatoUpdateDTO.getEndereco().getNumero());
+        enderecoEntity.setEstado(candidatoUpdateDTO.getEndereco().getEstado());
         enderecoEntity.setLogradouro(candidatoUpdateDTO.getEndereco().getLogradouro());
 
         if (candidatoUpdateDTO.getEscolaridades() != null) {
