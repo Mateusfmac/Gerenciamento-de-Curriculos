@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 public class EnderecoCreateDTO {
 
     @Pattern(regexp = "\\d{8}", message = "o cep deve ser somente números e conter 8 dígitos.")
+    @Size(min = 8, max = 8)
     @NotBlank
     private String cep;
     @NotNull
