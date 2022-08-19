@@ -8,6 +8,8 @@ import com.dbc.curriculo.dto.token.TokenDTO;
 import com.dbc.curriculo.dto.vaga.VagaCreateDTO;
 import com.dbc.curriculo.entity.*;
 import com.dbc.curriculo.enums.TipoSenioridade;
+import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.DefaultException;
 import com.dbc.curriculo.repository.VagaRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,7 +86,7 @@ public class VagaServiceTest {
     }
 
     @Test
-    public void deveTestarAdicionarCandidatosVaga(){
+    public void deveTestarAdicionarCandidatosVagaJaSalva(){
 
         VagaCreateDTO vagaCreateDTO = getVagasCreateDTO();
         List<CandidatoEntity> candidatos = new ArrayList<>(List.of(getCandidatoEntity()));
@@ -98,6 +100,48 @@ public class VagaServiceTest {
         vagaService.adicionarCandidatosVaga(vagaCreateDTO);
         verify(vagaRepository, times(1)).save(any(VagaEntity.class));
     }
+
+    @Test
+    public void deveTestarAdicionarCandidatosVagaNova(){
+
+        VagaCreateDTO vagaCreateDTO = getVagasCreateDTO();
+        List<CandidatoEntity> candidatos = new ArrayList<>(List.of(getCandidatoEntity()));
+
+        when(candidatoService.getAllCandidatoEntityById(anyList()))
+                .thenReturn(candidatos);
+        when(vagaRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        vagaService.adicionarCandidatosVaga(vagaCreateDTO);
+        verify(vagaRepository, times(1)).save(any(VagaEntity.class));
+    }
+
+    @Test
+    public void deveTestarDesvincularCandidatosVaga() throws CandidatoException, DefaultException {
+
+        CandidatoEntity candidato = getCandidatoEntity();
+        VagaEntity vagaEntity = getVagaEntity();
+
+        when(candidatoService.findCandidatoById(anyInt()))
+                .thenReturn(candidato);
+        when(vagaRepository.findById(anyInt())).thenReturn(Optional.of(vagaEntity));
+        when(vagaRepository.save(vagaEntity)).thenReturn(any(VagaEntity.class));
+
+        vagaService.removerCandidatoVaga(1, 10);
+        verify(vagaRepository, times(1)).save(any(VagaEntity.class));
+    }
+
+    @Test(expected = DefaultException.class)
+    public void deveTestarExceptionDesvincularCandidatosVaga() throws CandidatoException, DefaultException {
+
+        CandidatoEntity candidato = getCandidatoEntity();
+
+        when(candidatoService.findCandidatoById(anyInt()))
+                .thenReturn(candidato);
+        when(vagaRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        vagaService.removerCandidatoVaga(1, 10);
+    }
+
 
 
     private VagaCreateDTO getVagasCreateDTO(){

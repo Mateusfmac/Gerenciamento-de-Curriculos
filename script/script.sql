@@ -15,8 +15,8 @@ create table endereco(
 	logradouro text not null,
 	bairro text not null,
 	cidade text not null,
+	estado char(2) not null,
 	primary key (id_endereco)
-	on delete cascade
 );
 
 create sequence seq_endereco
@@ -71,7 +71,6 @@ create table experiencia(
 	primary key (id_experiencia),
     constraint fk_experiencia_candidato foreign key (id_candidato)
     references candidato (id_candidato)
-    on delete cascade
 );
 
 create sequence seq_experiencia

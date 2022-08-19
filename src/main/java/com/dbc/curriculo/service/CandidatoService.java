@@ -10,6 +10,7 @@ import com.dbc.curriculo.dto.experiencia.ExperienciaDTO;
 import com.dbc.curriculo.dto.vaga.VagaDTO;
 import com.dbc.curriculo.entity.*;
 import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.CandidatoValidarException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +34,13 @@ public class CandidatoService {
     private final CandidatoRepository candidatoRepository;
     private final AmazonS3Service amazonS3Service;
 
+    public CandidatoEntity findCandidatoById(Integer idCandidato) throws CandidatoException {
+        return candidatoRepository.findById(idCandidato)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new CandidatoException("Candidato não encontrado"));
+    }
+
     public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate) {
         List<Integer> listIds = vagaCreate.stream().map(CandidatoVagaDTO::getIdCandidato).toList();
         return candidatoRepository.findAllById(listIds);
@@ -43,7 +51,7 @@ public class CandidatoService {
                 .stream()
                 .map(this::getAllDadosCandidato)
                 .findFirst()
-                .orElseThrow(() -> new CandidatoException("Error ao buscar candidato"));
+                .orElseThrow(() -> new CandidatoException("Candidato inexistente"));
     }
 
     public List<CandidatoDadosDTO> getAllCandidatoDTO() {
@@ -53,7 +61,8 @@ public class CandidatoService {
 
 
     public CandidatoDadosDTO saveCandidato(CandidatoCreateDTO candidatoCreate,
-                                           MultipartFile documento) throws S3Exception, CandidatoException, IOException {
+                                           MultipartFile documento) throws S3Exception,
+            CandidatoValidarException, IOException {
 
         CandidatoEntity candidato = convertToCandidatoEntity(candidatoCreate);
 
@@ -90,10 +99,7 @@ public class CandidatoService {
 
     public CandidatoDTO updateCandidato(CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException {
 
-        CandidatoEntity candidato = candidatoRepository.findById(candidatoUpdateDTO.getIdCandidato())
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new CandidatoException("Candidato não encontrado"));
+        CandidatoEntity candidato = findCandidatoById(candidatoUpdateDTO.getIdCandidato());
 
         candidato.setNome(candidatoUpdateDTO.getNome());
         candidato.setCpf(candidatoUpdateDTO.getCpf());
@@ -131,12 +137,21 @@ public class CandidatoService {
         return getAllDadosCandidato(candidato);
     }
 
-    public void deleteCandidato(Integer idCandidato) {
-        candidatoRepository.deleteById(idCandidato);
+    public CandidatoDTO updateDocumentoCandidato(Integer idUsuario, MultipartFile file) throws S3Exception,
+            IOException, CandidatoException {
+        CandidatoEntity candidato = findCandidatoById(idUsuario);
+        URI uri = amazonS3Service.uploadFile(file);
+        candidato.setCurriculoUrl(uri.toString());
+        return getAllDadosCandidato(candidato);
+    }
+
+    public void deleteCandidato(Integer idCandidato) throws CandidatoException {
+        CandidatoEntity candidato = findCandidatoById(idCandidato);
+        candidatoRepository.delete(candidato);
     }
 
     private void validarSeCPFOrTelefoneJaEstaoCadastrado(CandidatoEntity candidato)
-            throws CandidatoException {
+            throws CandidatoValidarException {
         Optional<CandidatoEntity> candidatoCPF =
                 candidatoRepository.findByCpf(candidato.getCpf());
 
@@ -144,11 +159,11 @@ public class CandidatoService {
                 candidatoRepository.findByTelefone(candidato.getTelefone());
 
         if (candidatoCPF.isPresent() && candidatoNumero.isPresent()) {
-            throw new CandidatoException("CPF já cadastrado e número já cadastrado.");
+            throw new CandidatoValidarException("CPF já cadastrado e número já cadastrado.");
         } else if (candidatoCPF.isPresent()) {
-            throw new CandidatoException("CPF já cadastrado.");
+            throw new CandidatoValidarException("CPF já cadastrado.");
         } else if (candidatoNumero.isPresent()) {
-            throw new CandidatoException("Número já cadastrado.");
+            throw new CandidatoValidarException("Número já cadastrado.");
         }
     }
 
@@ -157,7 +172,7 @@ public class CandidatoService {
                 objectMapper.convertValue(candidato, CandidatoDadosDTO.class);
 
         List<VagaDTO> vagas = new ArrayList<>();
-        if(candidato.getVagaEntities() != null){
+        if (candidato.getVagaEntities() != null) {
             vagas = candidato.getVagaEntities()
                     .stream()
                     .map(this::vagaToVagaDTO).toList();
@@ -235,7 +250,7 @@ public class CandidatoService {
         return objectMapper.convertValue(experienciaEntity, ExperienciaDTO.class);
     }
 
-    private VagaDTO vagaToVagaDTO(VagaEntity vagaEntity){
+    private VagaDTO vagaToVagaDTO(VagaEntity vagaEntity) {
         return objectMapper.convertValue(vagaEntity, VagaDTO.class);
     }
 }

@@ -1,6 +1,7 @@
 package com.dbc.curriculo.exceptions;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.hibernate.id.IdentifierGenerationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -91,6 +92,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(CandidatoException.class)
     public ResponseEntity<Object> handleException(CandidatoException exception) {
+        return returnError(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CandidatoValidarException.class)
+    public ResponseEntity<Object> handleException(CandidatoValidarException exception) {
         return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -104,6 +110,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         String mensagem = "Error response: Service Unavailable.";
         return returnError(mensagem, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DefaultException.class)
+    public ResponseEntity<Object> handleException(DefaultException exception) {
+        return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleException(ExpiredJwtException exception) {
+        String mensagem = "Token expirou.";
+        return returnError(mensagem, HttpStatus.BAD_REQUEST);
+    }
+
 
 
 }

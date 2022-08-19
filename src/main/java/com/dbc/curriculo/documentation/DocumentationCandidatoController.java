@@ -6,6 +6,7 @@ import com.dbc.curriculo.dto.candidato.CandidatoDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoUpdateDTO;
 import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.CandidatoValidarException;
 import com.dbc.curriculo.exceptions.S3Exception;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +48,7 @@ public interface DocumentationCandidatoController {
     @MagiaResponse
     public ResponseEntity<CandidatoDadosDTO> save(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
-            @Valid @NotNull @RequestPart("documento") MultipartFile documento)
-            throws S3Exception, CandidatoException, IOException;
-
+            @Valid @NotNull @RequestPart("documento") MultipartFile documento) throws S3Exception, IOException, CandidatoValidarException;
     @Operation(
             summary = "Atualizar dados candidato.",
             description = "Esse endpoint atualiza os dados de um determinado candidato. " +
@@ -65,6 +64,6 @@ public interface DocumentationCandidatoController {
             description = "Esse endpoint remove um candidato do banco de dados."
     )
     @MagiaResponse
-    public void delete(@PathVariable Integer idUsuario);
+    public void delete(@PathVariable Integer idUsuario) throws CandidatoException;
 
 }

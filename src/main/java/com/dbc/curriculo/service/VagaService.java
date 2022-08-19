@@ -6,6 +6,8 @@ import com.dbc.curriculo.dto.token.TokenApiCompleo;
 import com.dbc.curriculo.dto.vaga.VagaCreateDTO;
 import com.dbc.curriculo.entity.CandidatoEntity;
 import com.dbc.curriculo.entity.VagaEntity;
+import com.dbc.curriculo.exceptions.CandidatoException;
+import com.dbc.curriculo.exceptions.DefaultException;
 import com.dbc.curriculo.repository.VagaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +52,28 @@ public class VagaService {
         vagaRepository.save(vagaEntity);
 
     }
+
+    public void removerCandidatoVaga(Integer idVaga, Integer idCandidato) throws CandidatoException, DefaultException {
+
+
+        CandidatoEntity candidato = candidatoService.findCandidatoById(idCandidato);
+
+        Optional<VagaEntity> vagaOptional = vagaRepository
+                .findById(idVaga);
+
+        if(vagaOptional.isEmpty()){
+            throw new DefaultException("Candidato não está cadastrado na vaga atual.");
+        }
+
+        VagaEntity vagaEntity = vagaOptional.get();
+
+        if(vagaEntity.getCandidatoEntities() != null){
+            vagaEntity.getCandidatoEntities().remove(candidato);
+        }
+
+        vagaRepository.save(vagaEntity);
+    }
+
 
     private VagaEntity convertToVagaEntity(VagaCreateDTO vagaCreateDTO){
         return objectMapper.convertValue(vagaCreateDTO, VagaEntity.class);
