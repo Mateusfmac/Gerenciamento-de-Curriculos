@@ -14,13 +14,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmazonServiceTest {
@@ -57,13 +57,28 @@ public class AmazonServiceTest {
     }
 
     @Test
-    public void deveTestaruploadFile() throws S3Exception, IOException {
+    public void deveTestarUploadFile() throws S3Exception, IOException {
 
         doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
         when(amazonS3.getUrl(anyString(), anyString())).thenReturn(url);
         URI uri = amazonS3Service.uploadFile(documento);
         assertNotNull(uri);
     }
+
+    @Test(expected = S3Exception.class)
+    public void deveTestarUploadFileException() throws S3Exception, IOException, URISyntaxException {
+
+        URL url = new URL("http://www.javacodegeeks.com");
+        doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
+        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(new URL(
+                "https",
+                "stackoverflow .com",
+                80, "pages/page1.html"));
+
+        amazonS3Service.uploadFile(documento);
+
+    }
+
 
 //    @Test(expected = IOException.class)
 //    public void deveTestarExececaoIoException() throws S3Exception, IOException {

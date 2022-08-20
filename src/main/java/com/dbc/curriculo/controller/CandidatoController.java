@@ -42,10 +42,12 @@ public class CandidatoController implements DocumentationCandidatoController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CandidatoDadosDTO> save(
+    public ResponseEntity<CandidatoDadosDTO> saveCandidato(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
-            @Valid @NotNull @RequestPart("documento") MultipartFile documento)
+            @Valid @NotNull @RequestPart("documento") MultipartFile documento
+    )
             throws S3Exception, IOException, CandidatoValidarException {
+        System.out.println("AQUI no create");
         CandidatoDadosDTO candidatoDTO = candidatoService.saveCandidato(candidato, documento);
         return ResponseEntity.ok(candidatoDTO);
     }

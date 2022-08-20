@@ -105,11 +105,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<Object> handleException(IOException exception) {
-        String mensagem = "Error response: Service Unavailable.";
-        return returnError(mensagem, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(IOException.class)
+//    public ResponseEntity<Object> handleException(IOException exception) {
+//        String mensagem = "Error response: Service Unavailable.";
+//        return returnError(mensagem, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(DefaultException.class)
     public ResponseEntity<Object> handleException(DefaultException exception) {
@@ -121,7 +121,5 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         String mensagem = "Token expirou.";
         return returnError(mensagem, HttpStatus.BAD_REQUEST);
     }
-
-
 
 }

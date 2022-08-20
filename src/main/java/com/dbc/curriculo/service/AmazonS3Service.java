@@ -23,12 +23,10 @@ public class AmazonS3Service {
     @Value("${s3.bucket}")
     private String bucketName;
 
-
     private final AmazonS3 amazonS3;
 
     public URI uploadFile(MultipartFile multipartFile) throws S3Exception, IOException {
-
-        InputStream inputStream = multipartFile.getInputStream();
+        InputStream inputStream  = multipartFile.getInputStream();
         String fileName = Calendar.getInstance().toString() + multipartFile.getOriginalFilename();
         fileName = Base64.getEncoder().encodeToString(
                 fileName.getBytes());
@@ -38,7 +36,6 @@ public class AmazonS3Service {
 
     public URI uploadFile(InputStream inputStream, String fileName, String contentType)
             throws S3Exception {
-
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);

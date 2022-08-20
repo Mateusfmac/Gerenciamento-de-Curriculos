@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-public class CurriculoApplication  {
+public class CurriculoApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(CurriculoApplication.class, args);

@@ -46,9 +46,12 @@ public interface DocumentationCandidatoController {
 
     )
     @MagiaResponse
-    public ResponseEntity<CandidatoDadosDTO> save(
+    public ResponseEntity<CandidatoDadosDTO> saveCandidato(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
-            @Valid @NotNull @RequestPart("documento") MultipartFile documento) throws S3Exception, IOException, CandidatoValidarException;
+            @Valid @NotNull @RequestPart("documento") MultipartFile documento
+    )
+            throws S3Exception, IOException, CandidatoValidarException;
+
     @Operation(
             summary = "Atualizar dados candidato.",
             description = "Esse endpoint atualiza os dados de um determinado candidato. " +
