@@ -1,5 +1,6 @@
 package com.dbc.curriculo.service;
 
+import com.dbc.curriculo.dto.PageDTO;
 import com.dbc.curriculo.dto.candidato.*;
 import com.dbc.curriculo.dto.endereco.EnderecoCreateDTO;
 import com.dbc.curriculo.dto.escolaridade.EscolaridadeCreateDTO;
@@ -20,6 +21,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -82,6 +86,22 @@ public class CandidatoServiceTest {
         assertEquals(1, candidato.getEscolaridadeEntities().size());
         assertNotNull(candidatoDTO.getEndereco());
 
+    }
+
+    @Test
+    public void deveTestarCandidatoPaginado(){
+        Integer pagina = 1;
+        Integer quantidade = 10;
+
+        List<CandidatoEntity> candidatos = List.of(getCandidatoAllDados());
+        Page<CandidatoEntity> pageCandidato = new PageImpl<>(candidatos);
+
+        when(candidatoRepository.findAll(any(Pageable.class))).thenReturn(pageCandidato);
+        PageDTO<CandidatoDadosDTO> pageDTO = candidatoService.getCandidatoPagination(pagina, quantidade);
+
+        assertNotNull(pageDTO);
+        assertEquals(1, pageDTO.getPaginas().intValue());
+        assertEquals(1, pageDTO.getContent().size());
     }
 
     @Test

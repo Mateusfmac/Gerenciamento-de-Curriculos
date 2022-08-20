@@ -1,6 +1,7 @@
 package com.dbc.curriculo.controller;
 
 import com.dbc.curriculo.documentation.DocumentationCandidatoController;
+import com.dbc.curriculo.dto.PageDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDadosDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
@@ -41,13 +42,20 @@ public class CandidatoController implements DocumentationCandidatoController {
         return ResponseEntity.ok(candidatoDTO);
     }
 
+    @GetMapping("/list-candidato-paginado")
+    public ResponseEntity<PageDTO<CandidatoDadosDTO>> paginacaoCandidato
+            (@RequestParam(required = false, defaultValue = "1") Integer pagina ,
+             @RequestParam(required = false, defaultValue = "20") Integer qtRegistro){
+        return ResponseEntity.ok(candidatoService.getCandidatoPagination(pagina, qtRegistro));
+    }
+
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CandidatoDadosDTO> saveCandidato(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
             @Valid @NotNull @RequestPart("documento") MultipartFile documento
     )
             throws S3Exception, IOException, CandidatoValidarException {
-        System.out.println("AQUI no create");
         CandidatoDadosDTO candidatoDTO = candidatoService.saveCandidato(candidato, documento);
         return ResponseEntity.ok(candidatoDTO);
     }

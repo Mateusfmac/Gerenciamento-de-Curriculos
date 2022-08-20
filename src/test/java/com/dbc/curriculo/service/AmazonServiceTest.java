@@ -20,7 +20,8 @@ import java.net.URL;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmazonServiceTest {
@@ -34,8 +35,6 @@ public class AmazonServiceTest {
     private MockMultipartFile documento;
 
     private URL url;
-
-    private final String bucketName = "";
 
     @Before
     public void init() throws MalformedURLException {
@@ -66,9 +65,8 @@ public class AmazonServiceTest {
     }
 
     @Test(expected = S3Exception.class)
-    public void deveTestarUploadFileException() throws S3Exception, IOException, URISyntaxException {
+    public void deveTestarUploadFileException() throws S3Exception, IOException {
 
-        URL url = new URL("http://www.javacodegeeks.com");
         doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
         when(amazonS3.getUrl(anyString(), anyString())).thenReturn(new URL(
                 "https",
@@ -78,25 +76,5 @@ public class AmazonServiceTest {
         amazonS3Service.uploadFile(documento);
 
     }
-
-
-//    @Test(expected = IOException.class)
-//    public void deveTestarExececaoIoException() throws S3Exception, IOException {
-//        when(amazonS3Service.uploadFile(documento)).thenThrow(IOException.class);
-//
-//    }
-
-//    @Test()
-//    public void deveTestarExcecaoURIError() throws S3Exception, URISyntaxException, MalformedURLException {
-//
-//
-//        doReturn(null).when(amazonS3).putObject(any(), any(), any(), any());
-//        when(amazonS3.getUrl(anyString(), anyString())).thenReturn(any(URL.class));
-//        //when(url.toURI()).thenReturn(new URI("http://www. javacodegeeks.com/"));
-//
-//    }
-
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.dbc.curriculo.service;
 
+import com.dbc.curriculo.dto.PageDTO;
 import com.dbc.curriculo.dto.candidato.*;
 import com.dbc.curriculo.dto.endereco.EnderecoCreateDTO;
 import com.dbc.curriculo.dto.endereco.EnderecoDTO;
@@ -15,6 +16,9 @@ import com.dbc.curriculo.exceptions.S3Exception;
 import com.dbc.curriculo.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +48,18 @@ public class CandidatoService {
     public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate) {
         List<Integer> listIds = vagaCreate.stream().map(CandidatoVagaDTO::getIdCandidato).toList();
         return candidatoRepository.findAllById(listIds);
+    }
+
+    public PageDTO getCandidatoPagination(Integer pagina, Integer registro){
+        PageRequest pageRequest = PageRequest.of(pagina, registro, Sort.by(Sort.Order.asc("nome")));
+        Page<CandidatoEntity> page = candidatoRepository.findAll(pageRequest);
+        List<CandidatoDadosDTO> candidatoDadosDTOS =
+                page.getContent().stream().map(this::getDadoCandidato).toList();
+        return new PageDTO<>(
+                page.getTotalElements(),
+                page.getTotalPages(),
+                pagina, registro,
+                candidatoDadosDTOS);
     }
 
     public CandidatoDTO getCandidatoPorId(Integer idCandidato) throws CandidatoException {
