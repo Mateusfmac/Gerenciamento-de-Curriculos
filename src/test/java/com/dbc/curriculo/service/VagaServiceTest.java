@@ -86,7 +86,7 @@ public class VagaServiceTest {
     }
 
     @Test
-    public void deveTestarAdicionarCandidatosVagaJaSalva(){
+    public void deveTestarVincularCandidatosVagaJaSalva(){
 
         VagaCreateDTO vagaCreateDTO = getVagasCreateDTO();
         List<CandidatoEntity> candidatos = new ArrayList<>(List.of(getCandidatoEntity()));
@@ -102,16 +102,14 @@ public class VagaServiceTest {
     }
 
     @Test
-    public void deveTestarAdicionarCandidatosVagaNova(){
+    public void deveTestarVincularCandidatosVagaNova() throws CandidatoException {
 
         VagaCreateDTO vagaCreateDTO = getVagasCreateDTO();
-        List<CandidatoEntity> candidatos = new ArrayList<>(List.of(getCandidatoEntity()));
+        CandidatoEntity candidato = getCandidatoEntity();
 
-        when(candidatoService.getAllCandidatoEntityById(anyList()))
-                .thenReturn(candidatos);
         when(vagaRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        vagaService.adicionarCandidatosVaga(vagaCreateDTO);
+        vagaService.vincularCandidatoVaga(1, 1);
         verify(vagaRepository, times(1)).save(any(VagaEntity.class));
     }
 

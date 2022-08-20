@@ -26,6 +26,7 @@ public class VagaController implements DocumentationVagaController {
         return ResponseEntity.ok(vagaService.getVagas(pagina, quantidade));
     }
 
+    // Todo -> Remover
     @PostMapping
     public void adicionarCandidato(@RequestBody VagaCreateDTO vagaCreate) {
         vagaService.adicionarCandidatosVaga(vagaCreate);
@@ -36,6 +37,13 @@ public class VagaController implements DocumentationVagaController {
                                  @PathVariable Integer idCandidato)
             throws CandidatoException, DefaultException {
         vagaService.removerCandidatoVaga(idVaga, idCandidato);
+    }
+
+    @PostMapping("/vincular/vaga/{idVaga}/candidato/{idCandidato}")
+    public void vincularCandidato(@PathVariable Integer idVaga,
+                                 @PathVariable Integer idCandidato)
+            throws CandidatoException {
+        vagaService.vincularCandidatoVaga(idVaga, idCandidato);
     }
 
 }

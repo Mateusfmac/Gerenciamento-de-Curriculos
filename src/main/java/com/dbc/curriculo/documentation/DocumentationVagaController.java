@@ -22,11 +22,14 @@ public interface DocumentationVagaController {
             @PathVariable("pagina") Integer pagina,
             @PathVariable("quantidade") Integer quantidade);
 
+
     @Operation(
-            summary = "Adicionar candidatos nas vagas.",
+            summary = "Vincula candidatos nas vagas.",
             description = "Adiciona os candidatos nas vagas do compleo."
     )
-    public void adicionarCandidato(@RequestBody VagaCreateDTO vagaCreate);
+    public void vincularCandidato(@PathVariable Integer idVaga,
+                                  @PathVariable Integer idCandidato)
+            throws CandidatoException;
 
     @Operation(
             summary = "Remove um candidato da vaga.",

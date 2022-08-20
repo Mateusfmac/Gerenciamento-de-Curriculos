@@ -55,6 +55,26 @@ public class VagaService {
 
     }
 
+    public void vincularCandidatoVaga(Integer idVaga, Integer idCandidato) throws CandidatoException {
+
+        CandidatoEntity candidatos = candidatoService.findCandidatoById(idCandidato);
+
+        Optional<VagaEntity> vagaOptional = vagaRepository.findById(idVaga);
+
+        VagaEntity vagaEntity = vagaOptional.orElseGet(() -> new VagaEntity(idVaga, new HashSet<>()));
+
+        Set<CandidatoEntity> candidatoEntitySet = new HashSet<>();
+        if(vagaEntity.getCandidatoEntities() != null){
+            candidatoEntitySet = vagaEntity.getCandidatoEntities();
+        }
+
+        candidatoEntitySet.add(candidatos);
+        vagaEntity.setCandidatoEntities(candidatoEntitySet);
+        vagaRepository.save(vagaEntity);
+
+    }
+
+
     public void removerCandidatoVaga(Integer idVaga, Integer idCandidato) throws CandidatoException, DefaultException {
 
 
