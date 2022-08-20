@@ -220,9 +220,9 @@ public class CandidatoServiceTest {
 
         when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
         when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidato));
-        CandidatoDTO candidatoDTO = candidatoService.updateDocumentoCandidato(1, documento);
+        String candidatoDTO = candidatoService.updateDocumentoCandidato(1, documento);
 
-        assertEquals(url.toURI().toString(), candidatoDTO.getCurriculoUrl());
+        assertEquals(url.toURI().toString(), candidatoDTO);
 
     }
 

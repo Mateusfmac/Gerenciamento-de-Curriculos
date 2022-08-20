@@ -68,11 +68,11 @@ public class CandidatoController implements DocumentationCandidatoController {
     }
 
     @PutMapping(value="/update-documento/{idCandidato}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CandidatoDTO> updateCandidatoDocumento(
+    public ResponseEntity<String> updateCandidatoDocumento(
             @PathVariable Integer idCandidato,
             @Valid @NotNull @RequestPart MultipartFile documento) throws CandidatoException, S3Exception, IOException {
-        CandidatoDTO candidatoDTO = candidatoService.updateDocumentoCandidato(idCandidato, documento);
-        return ResponseEntity.ok(candidatoDTO);
+        String urlCurriculo = candidatoService.updateDocumentoCandidato(idCandidato, documento);
+        return ResponseEntity.ok(urlCurriculo);
     }
 
     @DeleteMapping("/{idCandidato}")

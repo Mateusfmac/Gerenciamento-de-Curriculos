@@ -154,12 +154,13 @@ public class CandidatoService {
         return getAllDadosCandidato(candidato);
     }
 
-    public CandidatoDTO updateDocumentoCandidato(Integer idUsuario, MultipartFile file) throws S3Exception,
+    public String updateDocumentoCandidato(Integer idUsuario, MultipartFile file) throws S3Exception,
             IOException, CandidatoException {
         CandidatoEntity candidato = findCandidatoById(idUsuario);
         URI uri = amazonS3Service.uploadFile(file);
         candidato.setCurriculoUrl(uri.toString());
-        return getAllDadosCandidato(candidato);
+        candidatoRepository.save(candidato);
+        return candidato.getCurriculoUrl();
     }
 
     public void deleteCandidato(Integer idCandidato) throws CandidatoException {
