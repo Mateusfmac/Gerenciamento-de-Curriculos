@@ -44,7 +44,7 @@ public class CandidatoController implements DocumentationCandidatoController {
 
     @GetMapping("/list-candidato-paginado")
     public ResponseEntity<PageDTO<CandidatoDadosDTO>> paginacaoCandidato
-            (@RequestParam(required = false, defaultValue = "1") Integer pagina ,
+            (@RequestParam(required = false, defaultValue = "0") Integer pagina ,
              @RequestParam(required = false, defaultValue = "20") Integer qtRegistro){
         return ResponseEntity.ok(candidatoService.getCandidatoPagination(pagina, qtRegistro));
     }
