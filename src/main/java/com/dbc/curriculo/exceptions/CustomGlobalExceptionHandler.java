@@ -107,7 +107,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<Object> handleException(IOException exception) {
-        String mensagem = "Error response: Service Unavailable.";
+        String mensagem = "O tamanho máximo deve ser de 10MB";
         return returnError(mensagem, HttpStatus.BAD_REQUEST);
     }
 
@@ -120,6 +120,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleException(ExpiredJwtException exception) {
         String mensagem = "Token expirou.";
         return returnError(mensagem, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(S3Exception.class)
+    public ResponseEntity<Object> handleException(S3Exception exception) {
+        return returnError(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

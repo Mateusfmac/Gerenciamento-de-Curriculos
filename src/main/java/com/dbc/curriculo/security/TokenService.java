@@ -27,7 +27,6 @@ public class TokenService {
     @Value("$jwt.issuer")
     private String issuer;
 
-    // Todo - Adicionar usuário
     public String getToken(LoginEntity usuarioEntity){
 
         final Date now = new Date();

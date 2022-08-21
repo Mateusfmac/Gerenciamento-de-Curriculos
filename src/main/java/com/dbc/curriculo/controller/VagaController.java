@@ -2,7 +2,6 @@ package com.dbc.curriculo.controller;
 
 import com.dbc.curriculo.documentation.DocumentationVagaController;
 import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
-import com.dbc.curriculo.dto.vaga.VagaCreateDTO;
 import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.DefaultException;
 import com.dbc.curriculo.service.VagaService;
@@ -24,12 +23,6 @@ public class VagaController implements DocumentationVagaController {
             @PathVariable("pagina") Integer pagina,
             @PathVariable("quantidade") Integer quantidade){
         return ResponseEntity.ok(vagaService.getVagas(pagina, quantidade));
-    }
-
-    // Todo -> Remover
-    @PostMapping
-    public void adicionarCandidato(@RequestBody VagaCreateDTO vagaCreate) {
-        vagaService.adicionarCandidatosVaga(vagaCreate);
     }
 
     @PostMapping("/desvincular/vaga/{idVaga}/candidato/{idCandidato}")

@@ -31,6 +31,11 @@ public class AmazonS3Service {
         fileName = Base64.getEncoder().encodeToString(
                 fileName.getBytes());
         String contentType = multipartFile.getContentType();
+
+        if(contentType != null && !contentType.equals("application/pdf")){
+            throw new S3Exception("O arquivo deve ser pdf.");
+        }
+
         return uploadFile(inputStream, fileName, contentType);
     }
 

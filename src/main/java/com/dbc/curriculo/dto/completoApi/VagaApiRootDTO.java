@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * Essa classe é a root para buscar os dados da API
  * @author Clebson Mendonça
  */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

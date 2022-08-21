@@ -1,12 +1,8 @@
 package com.dbc.curriculo.security;
 
-import com.dbc.curriculo.dto.login.LoginCredenciaisDTO;
-import com.dbc.curriculo.dto.token.TokenDTO;
 import com.dbc.curriculo.entity.LoginEntity;
 import com.dbc.curriculo.service.LoginService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

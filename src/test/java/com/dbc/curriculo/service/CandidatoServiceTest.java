@@ -227,16 +227,6 @@ public class CandidatoServiceTest {
     }
 
 
-    @Test
-    public void deveTestarGetAllCandidatoEntityById() {
-    List<CandidatoEntity> candidatoEntities = List.of(getCandidatoAllDados());
-    List<CandidatoVagaDTO> candidatoVagaDTOS = List.of(new CandidatoVagaDTO());
-
-    when(candidatoRepository.findAllById(any())).thenReturn(candidatoEntities);
-
-    candidatoService.getAllCandidatoEntityById(candidatoVagaDTOS);
-    }
-
     private CandidatoEntity getCandidatoAllDados() {
         CandidatoEntity candidato = new CandidatoEntity();
         candidato.setIdCandidato(1);

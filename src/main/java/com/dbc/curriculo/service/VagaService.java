@@ -3,7 +3,6 @@ package com.dbc.curriculo.service;
 import com.dbc.curriculo.client.compleo.ApiCompleo;
 import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
 import com.dbc.curriculo.dto.token.TokenApiCompleo;
-import com.dbc.curriculo.dto.vaga.VagaCreateDTO;
 import com.dbc.curriculo.entity.CandidatoEntity;
 import com.dbc.curriculo.entity.VagaEntity;
 import com.dbc.curriculo.exceptions.CandidatoException;
@@ -13,9 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -32,28 +32,6 @@ public class VagaService {
         return apiCompleo.getVagas(authToken, pagina, quantidade);
     }
 
-
-    public void adicionarCandidatosVaga(VagaCreateDTO vagaCreateDTO) {
-
-        List<CandidatoEntity> candidatos = candidatoService
-                .getAllCandidatoEntityById(vagaCreateDTO.getCandidatos());
-
-        Optional<VagaEntity> vagaOptional = vagaRepository
-                .findById(vagaCreateDTO.getIdVaga());
-
-        VagaEntity vagaEntity = vagaOptional
-                .orElseGet(() -> convertToVagaEntity(vagaCreateDTO));
-
-        Set<CandidatoEntity> candidatoEntitySet = new HashSet<>();
-        if(vagaEntity.getCandidatoEntities() != null){
-            candidatoEntitySet = vagaEntity.getCandidatoEntities();
-        }
-
-        candidatoEntitySet.addAll(candidatos);
-        vagaEntity.setCandidatoEntities(candidatoEntitySet);
-        vagaRepository.save(vagaEntity);
-
-    }
 
     public void vincularCandidatoVaga(Integer idVaga, Integer idCandidato) throws CandidatoException {
 
@@ -94,11 +72,6 @@ public class VagaService {
         }
 
         vagaRepository.save(vagaEntity);
-    }
-
-
-    private VagaEntity convertToVagaEntity(VagaCreateDTO vagaCreateDTO){
-        return objectMapper.convertValue(vagaCreateDTO, VagaEntity.class);
     }
 
 }

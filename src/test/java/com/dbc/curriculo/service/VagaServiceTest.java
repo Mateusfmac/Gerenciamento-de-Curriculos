@@ -5,8 +5,8 @@ import com.dbc.curriculo.dto.completoApi.VagaAPIRootListDTO;
 import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
 import com.dbc.curriculo.dto.token.TokenApiCompleo;
 import com.dbc.curriculo.dto.token.TokenDTO;
-import com.dbc.curriculo.dto.vaga.VagaCreateDTO;
-import com.dbc.curriculo.entity.*;
+import com.dbc.curriculo.entity.CandidatoEntity;
+import com.dbc.curriculo.entity.VagaEntity;
 import com.dbc.curriculo.enums.TipoSenioridade;
 import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.DefaultException;
@@ -28,7 +28,8 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -86,26 +87,8 @@ public class VagaServiceTest {
     }
 
     @Test
-    public void deveTestarVincularCandidatosVagaJaSalva(){
-
-        VagaCreateDTO vagaCreateDTO = getVagasCreateDTO();
-        List<CandidatoEntity> candidatos = new ArrayList<>(List.of(getCandidatoEntity()));
-        VagaEntity vagaEntity = getVagaEntity();
-
-        when(candidatoService.getAllCandidatoEntityById(anyList()))
-                .thenReturn(candidatos);
-        when(vagaRepository.findById(anyInt())).thenReturn(Optional.of(vagaEntity));
-        when(vagaRepository.save(vagaEntity)).thenReturn(any(VagaEntity.class));
-
-        vagaService.adicionarCandidatosVaga(vagaCreateDTO);
-        verify(vagaRepository, times(1)).save(any(VagaEntity.class));
-    }
-
-    @Test
     public void deveTestarVincularCandidatosVagaNova() throws CandidatoException {
 
-        VagaCreateDTO vagaCreateDTO = getVagasCreateDTO();
-        CandidatoEntity candidato = getCandidatoEntity();
 
         when(vagaRepository.findById(anyInt())).thenReturn(Optional.empty());
 
@@ -140,14 +123,6 @@ public class VagaServiceTest {
         vagaService.removerCandidatoVaga(1, 10);
     }
 
-
-
-    private VagaCreateDTO getVagasCreateDTO(){
-        VagaCreateDTO vagaCreateDTO = new VagaCreateDTO();
-        vagaCreateDTO.setIdVaga(1);
-        vagaCreateDTO.setCandidatos(new ArrayList<>());
-        return vagaCreateDTO;
-    }
 
     private VagaApiRootDTO getVagaApiRootDTO(){
         VagaApiRootDTO vaga = new VagaApiRootDTO();

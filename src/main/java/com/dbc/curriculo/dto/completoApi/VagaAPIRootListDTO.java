@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Essa classe é a lista de vagas da API. Será utilizada somente para buscar os dados
+ * Essa classe é a lista de vagas da API. Será utilizada somente para buscar os dados.
+ * Quando precisar de um campo da API desmarcar.
  * @author Clebson Mendonça
  */
+
+
 @Data
 public class VagaAPIRootListDTO {
     @JsonProperty("id")

@@ -45,11 +45,6 @@ public class CandidatoService {
                 .orElseThrow(() -> new CandidatoException("Candidato não encontrado"));
     }
 
-    public List<CandidatoEntity> getAllCandidatoEntityById(List<CandidatoVagaDTO> vagaCreate) {
-        List<Integer> listIds = vagaCreate.stream().map(CandidatoVagaDTO::getIdCandidato).toList();
-        return candidatoRepository.findAllById(listIds);
-    }
-
     public PageDTO getCandidatoPagination(Integer pagina, Integer registro){
         PageRequest pageRequest = PageRequest.of(pagina, registro, Sort.by(Sort.Order.asc("nome")));
         Page<CandidatoEntity> page = candidatoRepository.findAll(pageRequest);

@@ -77,4 +77,16 @@ public class AmazonServiceTest {
 
     }
 
+    @Test(expected = S3Exception.class)
+    public void deveTestarTipoDeArquivo() throws S3Exception, IOException {
+
+        documento = new MockMultipartFile(
+                "arquivo.jpge",
+                "arquivo",
+                "application/jpge",
+                "{key1: value1}".getBytes());
+        amazonS3Service.uploadFile(documento);
+
+    }
+
 }

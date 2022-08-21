@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.rmi.UnexpectedException;
+
 public class SimpleErrorDecode implements ErrorDecoder{
 
     public Exception decode(String methodKey, Response response) {
