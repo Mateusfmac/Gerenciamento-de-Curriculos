@@ -1,12 +1,13 @@
 create schema gerenciamento_curriculo;
 
-CREATE table login(
+create table login(
     id_login INTEGER primary key,
     email text not null unique,
-    senha text not null    
+    senha text not null,
+    enable integer not null
 );
 
-CREATE SEQUENCE user_id START 1;
+create SEQUENCE user_id START 1;
 
 create table endereco(
 	id_endereco integer,
