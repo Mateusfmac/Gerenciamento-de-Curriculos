@@ -30,7 +30,7 @@ create table candidato(
 	nome text not null,
 	cpf char(11) not null unique,
 	data_nascimento date not null,
-	telefone char(14) not null unique,
+	telefone char(11) not null unique,
 	senioridade text not null,
 	cargo text not null,
 	curriculo_url text not null,
