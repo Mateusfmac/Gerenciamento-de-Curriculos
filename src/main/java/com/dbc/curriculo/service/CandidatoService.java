@@ -98,8 +98,15 @@ public class CandidatoService {
             candidato.setExperienciaEntities(experiencias);
         }
 
+        // O serviço de upload de arquivo da amazon será desativado, para não quebrar a
+        // aplicação será atribuido um link de um pdf
+
+        /*
         URI amazonUri = amazonS3Service.uploadFile(documento);
         candidato.setCurriculoUrl(amazonUri.toString());
+        */
+
+        candidato.setCurriculoUrl("https://bit.ly/3e0vaH2");
 
         candidatoRepository.save(candidato);
 
@@ -152,8 +159,14 @@ public class CandidatoService {
     public String updateDocumentoCandidato(Integer idUsuario, MultipartFile file) throws S3Exception,
             IOException, CandidatoException {
         CandidatoEntity candidato = findCandidatoById(idUsuario);
+
+        // O serviço de upload de arquivo da amazon será desativado, para não quebrar a
+        // aplicação será atribuido um link de um pdf qualquer
+        /*
         URI uri = amazonS3Service.uploadFile(file);
         candidato.setCurriculoUrl(uri.toString());
+        */
+        candidato.setCurriculoUrl("https://bit.ly/3QQkJ7J");
         candidatoRepository.save(candidato);
         return candidato.getCurriculoUrl();
     }

@@ -170,7 +170,8 @@ public class CandidatoServiceTest {
         when(candidatoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
         when(candidatoRepository.findByTelefone(anyString())).thenReturn(Optional.empty());
 
-        when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
+        // Desativado mock porque o sistema da amazon foi desativado
+        //when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
         candidatoService.saveCandidato(candidatoCreateDTO, documento);
 
     }
@@ -217,12 +218,12 @@ public class CandidatoServiceTest {
                 "google.com",
                 80, "pages/page1.html");
 
-
-        when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
+        // Desativado porque foi removido o sistema de upload de arquivo Amazon
+        //when(amazonS3Service.uploadFile(any())).thenReturn(url.toURI());
         when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidato));
-        String candidatoDTO = candidatoService.updateDocumentoCandidato(1, documento);
+        String urlCurriculoNovo = candidatoService.updateDocumentoCandidato(1, documento);
 
-        assertEquals(url.toURI().toString(), candidatoDTO);
+        assertNotNull(urlCurriculoNovo);
 
     }
 
