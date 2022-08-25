@@ -1,3 +1,4 @@
+// FIXME pacote deve ser todo minusculo
 package com.dbc.curriculo.dto.completoApi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +23,8 @@ public class VagaAPIRootListDTO {
     public String cidade;
     @JsonProperty("Estado")
     public String estado;
+
+    // FIXME deve ser lista
     @JsonProperty("Tags")
     public ArrayList<Object> tags;
 }

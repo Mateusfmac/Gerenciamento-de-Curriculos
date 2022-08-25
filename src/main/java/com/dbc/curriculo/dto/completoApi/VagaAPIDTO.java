@@ -4,8 +4,10 @@ import lombok.Data;
 
 import java.util.ArrayList;
 
+// FIXME falta documentação swagger
 @Data
 public class VagaAPIDTO {
+    // FIXME deve ser list...
     public ArrayList<VagaApiListDTO> vagas;
     public int total;
     public int paginas;

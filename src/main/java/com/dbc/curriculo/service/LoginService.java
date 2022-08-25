@@ -22,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginService {
 
+    // FIXME constante fora do padrão
     private static final String errorLogin = "Error ao buscar usuário.";
     private final LoginRepository usuarioRepository;
     private final ObjectMapper objectMapper;
@@ -100,6 +101,7 @@ public class LoginService {
         return objectMapper.convertValue(usuarioEntity, LoginDTO.class);
     }
 
+    // FIXME nome do método deve começar por minusculo
     public LoginEntity LoginCredenciaisConvertToLoginEntity(LoginCredenciaisDTO loginCredenciais) {
         return objectMapper.convertValue(loginCredenciais, LoginEntity.class);
     }

@@ -22,6 +22,8 @@ public class SecurityConfiguration {
 
     private final TokenService tokenService;
     private static final String AUTHORIZATION = "Authorization";
+
+    // FIXME constante fora do padrão
     private static final String[] permitMatchers = {
             "/",
             "/login/**"

@@ -17,6 +17,7 @@ public enum StatusVagasEnum {
         this.status = status;
     }
 
+    // FIXME metodo nao usado... (além disso escrito errado)
     public static StatusVagasEnum offValue (String status){
         return Arrays.stream(StatusVagasEnum.values())
                 .filter(tp -> tp.getStatus().equals(status))

@@ -15,6 +15,8 @@ import java.util.Optional;
 public class AuthenticationService implements UserDetailsService {
 
     private final LoginService loginService;
+
+    // FIXME erro de português, além disso constante fora do padrão de nomenclatura ERRO_LOGIN
     private static final String errorLogin = "Credênciais inválidas.";
 
     @Override

@@ -32,7 +32,7 @@ public class OpenApiConfig {
         String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info().title("Gerenciador de Currículo")
-                        .description("Pessoa API documentação")
+                        .description("Pessoa API documentação") // FIXME Pessoa api documentação?
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
