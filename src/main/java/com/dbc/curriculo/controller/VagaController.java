@@ -1,7 +1,7 @@
 package com.dbc.curriculo.controller;
 
 import com.dbc.curriculo.documentation.DocumentationVagaController;
-import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
+import com.dbc.curriculo.dto.completoapi.VagaApiRootDTO;
 import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.DefaultException;
 import com.dbc.curriculo.service.VagaService;

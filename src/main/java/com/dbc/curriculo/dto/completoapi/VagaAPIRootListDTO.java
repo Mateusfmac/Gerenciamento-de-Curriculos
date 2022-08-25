@@ -1,30 +1,28 @@
-// FIXME pacote deve ser todo minusculo
-package com.dbc.curriculo.dto.completoApi;
+package com.dbc.curriculo.dto.completoapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class VagaAPIRootListDTO {
     @JsonProperty("id")
-    public Integer id;
+    private Integer id;
     @JsonProperty("Titulo")
-    public String titulo;
+    private String titulo;
     @JsonProperty("Status")
-    public String status;
+    private String status;
     @JsonProperty("DataAbertura")
-    public Date dataAbertura;
+    private Date dataAbertura;
     @JsonProperty("Categoria")
-    public Object categoria;
+    private Object categoria;
     @JsonProperty("Cidade")
-    public String cidade;
+    private String cidade;
     @JsonProperty("Estado")
-    public String estado;
+    private String estado;
 
-    // FIXME deve ser lista
     @JsonProperty("Tags")
-    public ArrayList<Object> tags;
+    public List<Object> tags;
 }

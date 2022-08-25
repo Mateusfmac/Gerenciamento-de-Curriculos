@@ -1,6 +1,6 @@
 package com.dbc.curriculo.documentation;
 
-import com.dbc.curriculo.anotations.MagiaResponse;
+import com.dbc.curriculo.anotations.Response;
 import com.dbc.curriculo.dto.PageDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoCreateDTO;
 import com.dbc.curriculo.dto.candidato.CandidatoDTO;
@@ -28,7 +28,7 @@ public interface DocumentationCandidatoController {
             summary = "Busca uma lista de candidatos..",
             description = "Esse endpoint retorna todos os candidatos salvo no banco de dados."
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<List<CandidatoDadosDTO>> getListCandidato();
 
     @Operation(
@@ -37,14 +37,14 @@ public interface DocumentationCandidatoController {
                     " Caso não exista retornará um error."
 
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<CandidatoDTO> getCandidato(
             @PathVariable("idCandidato") Integer idCandidato) throws CandidatoException;
 
     @Operation(
             summary = "Retorna uma lista de candidato paginada."
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<PageDTO<CandidatoDadosDTO>> paginacaoCandidato
             (@RequestParam(required = false, defaultValue = "1") Integer pagina ,
              @RequestParam(required = false, defaultValue = "20") Integer qtRegistro);
@@ -56,7 +56,7 @@ public interface DocumentationCandidatoController {
                     "O CPF e Telefone devem ser únicos, as listas de experiências e escolaridades podem ser vazias"
 
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<CandidatoDadosDTO> saveCandidato(
             @Valid @RequestPart("candidato") CandidatoCreateDTO candidato,
             @Valid @NotNull @RequestPart("documento") MultipartFile documento
@@ -70,7 +70,7 @@ public interface DocumentationCandidatoController {
                     "os já existentes, deixando assim o usuário sem escolaridade e experiência."
 
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<CandidatoDTO> updateCandidato(@Valid @RequestBody CandidatoUpdateDTO candidatoUpdateDTO) throws CandidatoException;
 
     @Operation(
@@ -78,7 +78,7 @@ public interface DocumentationCandidatoController {
             description = "Esse endpoint atualiza o curriculo do candidato."
 
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<String> updateCandidatoDocumento(
             @PathVariable Integer idCandidato,
             @Valid @NotNull @RequestPart MultipartFile documento) throws CandidatoException, S3Exception, IOException;
@@ -88,7 +88,7 @@ public interface DocumentationCandidatoController {
             summary = "Remover candidato.",
             description = "Esse endpoint remove um candidato do banco de dados."
     )
-    @MagiaResponse
+    @Response
     public void delete(@PathVariable Integer idUsuario) throws CandidatoException;
 
 }

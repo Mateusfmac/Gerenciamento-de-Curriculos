@@ -48,6 +48,5 @@ import java.lang.annotation.Target;
                 )
         }
 )
-public @interface MagiaResponse {
-    //FIXME Magia? o que seria magia? não usar nomes assim para um trabalho final e nem em clientes!
+public @interface Response {
 }

@@ -1,8 +1,8 @@
 package com.dbc.curriculo.service;
 
 import com.dbc.curriculo.client.compleo.ApiCompleo;
-import com.dbc.curriculo.dto.completoApi.VagaAPIRootListDTO;
-import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
+import com.dbc.curriculo.dto.completoapi.VagaAPIRootListDTO;
+import com.dbc.curriculo.dto.completoapi.VagaApiRootDTO;
 import com.dbc.curriculo.dto.token.TokenApiCompleo;
 import com.dbc.curriculo.dto.token.TokenDTO;
 import com.dbc.curriculo.entity.CandidatoEntity;

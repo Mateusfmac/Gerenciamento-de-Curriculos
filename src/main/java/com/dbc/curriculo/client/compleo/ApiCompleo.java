@@ -1,6 +1,6 @@
 package com.dbc.curriculo.client.compleo;
 
-import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
+import com.dbc.curriculo.dto.completoapi.VagaApiRootDTO;
 import feign.HeaderMap;
 import feign.Headers;
 import feign.Param;
@@ -16,10 +16,9 @@ import java.util.Map;
 @Headers("Content-Type: application/json")
 public interface ApiCompleo {
 
-    // FIXME variável deve ser com cammelcase começando por minusculo
     @RequestLine("GET api/Relatorios/ListarRelatorioVagasGeral?Pagina={Pagina}&Quantidade={Quantidade}&RetornaHistoricoMudancaStatus=true&RetornaListaContatos=true&RetornaTags=true")
     public VagaApiRootDTO getVagas(@HeaderMap Map<String, String> headers,
-                                   @Param Integer Pagina,
-                                   @Param Integer Quantidade);
+                                   @Param Integer pagina,
+                                   @Param Integer quantidade);
 
 }

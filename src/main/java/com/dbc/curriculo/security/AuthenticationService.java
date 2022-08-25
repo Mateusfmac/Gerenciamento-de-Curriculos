@@ -16,14 +16,13 @@ public class AuthenticationService implements UserDetailsService {
 
     private final LoginService loginService;
 
-    // FIXME erro de português, além disso constante fora do padrão de nomenclatura ERRO_LOGIN
-    private static final String errorLogin = "Credênciais inválidas.";
+    private static final String ERROR_LOGIN = "Credenciais inválidas.";
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<LoginEntity> usuarioEntity = loginService.buscarLoginPorEmail(email);
         return usuarioEntity
-                .orElseThrow(()-> new UsernameNotFoundException(errorLogin));
+                .orElseThrow(()-> new UsernameNotFoundException(ERROR_LOGIN));
     }
 
 }

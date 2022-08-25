@@ -22,8 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginService {
 
-    // FIXME constante fora do padrão
-    private static final String errorLogin = "Error ao buscar usuário.";
+    private static final String ERROR_LOGIN = "Error ao buscar usuário.";
     private final LoginRepository usuarioRepository;
     private final ObjectMapper objectMapper;
 
@@ -35,10 +34,10 @@ public class LoginService {
             idUser =  (Integer) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             if(idUser == null) {
-                throw new LoginException(errorLogin);
+                throw new LoginException(ERROR_LOGIN);
             }
         } catch (Exception e){
-            throw new LoginException(errorLogin);
+            throw new LoginException(ERROR_LOGIN);
         }
         return idUser;
     }
@@ -55,7 +54,7 @@ public class LoginService {
 
     public LoginEntity buscarPorId(Integer idLogin) throws LoginException {
         return usuarioRepository.findById(idLogin)
-                .orElseThrow(() -> new LoginException(errorLogin));
+                .orElseThrow(() -> new LoginException(ERROR_LOGIN));
     }
     
     public LoginDTO getUsuarioLogado() throws LoginException {
@@ -63,7 +62,7 @@ public class LoginService {
     }
 
     public LoginDTO createLoginUser(LoginCredenciaisDTO loginCredenciais) throws LoginException {
-        LoginEntity loginEntity = LoginCredenciaisConvertToLoginEntity(loginCredenciais);
+        LoginEntity loginEntity = loginCredenciaisConvertToLoginEntity(loginCredenciais);
 
         verificarSeEmailJaEstaCadastrado(loginEntity.getEmail());
 
@@ -101,8 +100,7 @@ public class LoginService {
         return objectMapper.convertValue(usuarioEntity, LoginDTO.class);
     }
 
-    // FIXME nome do método deve começar por minusculo
-    public LoginEntity LoginCredenciaisConvertToLoginEntity(LoginCredenciaisDTO loginCredenciais) {
+    public LoginEntity loginCredenciaisConvertToLoginEntity(LoginCredenciaisDTO loginCredenciais) {
         return objectMapper.convertValue(loginCredenciais, LoginEntity.class);
     }
 }

@@ -1,7 +1,7 @@
 package com.dbc.curriculo.documentation;
 
-import com.dbc.curriculo.anotations.MagiaResponse;
-import com.dbc.curriculo.dto.completoApi.VagaApiRootDTO;
+import com.dbc.curriculo.anotations.Response;
+import com.dbc.curriculo.dto.completoapi.VagaApiRootDTO;
 import com.dbc.curriculo.exceptions.CandidatoException;
 import com.dbc.curriculo.exceptions.DefaultException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +14,7 @@ public interface DocumentationVagaController {
             summary = "Busca as vagas na API.",
             description = "Busca as vagas paginadas da API Compleo."
     )
-    @MagiaResponse
+    @Response
     public ResponseEntity<VagaApiRootDTO> getVagas(
             @PathVariable("pagina") Integer pagina,
             @PathVariable("quantidade") Integer quantidade);

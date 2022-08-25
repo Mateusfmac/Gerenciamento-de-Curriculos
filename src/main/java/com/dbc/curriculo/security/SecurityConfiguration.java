@@ -23,13 +23,12 @@ public class SecurityConfiguration {
     private final TokenService tokenService;
     private static final String AUTHORIZATION = "Authorization";
 
-    // FIXME constante fora do padrão
-    private static final String[] permitMatchers = {
+    private static final String[] PERMIT_MATCHERS = {
             "/",
             "/login/**"
     };
 
-    private static final String[] webIgnoreMatchers = {
+    private static final String[] WEB_IGNORE_MATCHERS = {
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-resources/**",
@@ -44,7 +43,7 @@ public class SecurityConfiguration {
                 .and().csrf().disable()
                 .authorizeHttpRequests(
                         (authorizationManager) -> authorizationManager
-                                .antMatchers(permitMatchers)
+                                .antMatchers(PERMIT_MATCHERS)
                                 .permitAll()
                                 .anyRequest().authenticated()
                 );
@@ -57,7 +56,7 @@ public class SecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().antMatchers(webIgnoreMatchers));
+        return (web -> web.ignoring().antMatchers(WEB_IGNORE_MATCHERS));
     }
 
     @Bean
